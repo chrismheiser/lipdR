@@ -9,6 +9,7 @@
 #' @return D LiPD Library
 load.lipds <- function(){
   set.modules()
+  options( warn = -1 )
 
   # Ask user where files are stored
   path.and.file <- get.local.path()
@@ -43,13 +44,5 @@ load.lipds <- function(){
   # Move back to the inital directory (Prior to temp folder)
   setwd(initial.dir)
 
-  #if multiple files,
-  # Return the "LiPD Library" of compiled, imported data
-  if(length(lpds)>1){
-    return(D)
-  }else{#return single LiPD object
-    return(D[[1]])
-    }
-
-
+  return(D)
 }

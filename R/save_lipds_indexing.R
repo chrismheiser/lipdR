@@ -20,55 +20,55 @@ index.by.number <- function(d){
 #' @param keys Section keys
 #' @return d Modified metadata
 idx.section <- function(d, keys){
-  pc <- keys[[1]]
-  meas <- keys[[2]]
-  model <- keys[[3]]
+  key1 <- keys[[1]]
+  key2 <- keys[[2]]
+  key3 <- keys[[3]]
 
   # d$paleoData
-  for (i in 1:length(d[[pc]])){
+  for (i in 1:length(d[[key1]])){
 
     # d$paleoData[[i]]
 
     # d$paleoData[[i]]paleoMeasurementTable
-    for (j in 1:length(d[[pc]][[i]][[meas]])){
+    for (j in 1:length(d[[key1]][[i]][[key2]])){
 
       # d$paleoData[[i]]paleoMeasurementTable[[j]]
-      table <- d[[pc]][[i]][[meas]][[j]]
+      table <- d[[key1]][[i]][[key2]][[j]]
 
       if(!is.null(table)){
         new <- move.cols.down(table)
-        d[[pc]][[i]][[meas]][[j]] <- new
+        d[[key1]][[i]][[key2]][[j]] <- new
       }
 
     } # end meas
 
     # d$paleoData[[i]]paleoModel
-    for (j in 1:length(d[[pc]][[i]][[model]])){
+    for (j in 1:length(d[[key1]][[i]][[key3]])){
 
       # d$paleoData[[i]]paleoModel[[j]]
 
       # d$paleoData[[i]]paleoModel[[j]]$summaryTable - should only be one
-      table <- d[[pc]][[i]][[model]][[j]][["summaryTable"]][[1]]
+      table <- d[[key1]][[i]][[key3]][[j]][["summaryTable"]]
       if (!is.null(table)){
         new <- move.cols.down(table)
-        d[[pc]][[i]][[model]][[j]][["summaryTable"]] <- new
+        d[[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new
       }
 
       # d$paleoData[[i]]paleoModel[[j]]$ensembleTable - should only be one
-      table <- d[[pc]][[i]][[model]][[j]][["ensembleTable"]][[1]]
+      table <- d[[key1]][[i]][[key3]][[j]][["ensembleTable"]]
       if (!is.null(table)){
         new <- move.cols.down(table)
-        d[[pc]][[i]][[model]][[j]][["ensembleTable"]] <- new
+        d[[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new
       }
       # d$paleoData[[i]]paleoModel[[j]]$distributionTable - can be one or many
-      for (k in 1:length(d[[pc]][[i]][[model]][[j]][["distributionTable"]])){
+      for (k in 1:length(d[[key1]][[i]][[key3]][[j]][["distributionTable"]])){
 
         # d$paleoData[[i]]paleoModel[[j]]$distributionTable[[k]]
-        table <- d[[pc]][[i]][[model]][[j]][["distributionTable"]][[k]]
+        table <- d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]]
         if (!is.null(table)){
           new <- move.cols.down(table)
           # only add if the table exists
-          d[[pc]][[i]][[model]][[j]][["distributionTable"]][[k]] <- new
+          d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new
         }
 
       } # end distribution
