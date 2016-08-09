@@ -161,7 +161,7 @@ convert.s2m <- function(d, keys){
     }
 
     # continue if Model table present
-    if (!is.NullOb(d[["metadata"]][[key1]][[i]][[key3]])){
+    if (length(d[["metadata"]][[key1]][[i]][[key3]]) > 0){
       # MODEL
       # paleoData[[i]]paleoModel
       # data frame ?
