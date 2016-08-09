@@ -4,7 +4,6 @@
 ## data into a preferred R analysis structure
 ###############################################
 
-
 #' Change index-by-number to index-by-variableName
 #' @export
 #' @param D The lipd library
@@ -35,11 +34,10 @@ index.by.name <- function(D, lpds){
       for (pdm.idx in 1:length(curr.pd[["paleoModel"]])){
         curr.model <- curr.pd[["paleoModel"]][[pdm.idx]]
 
-        # check in ensemble table - FIX
+        # TO DO: check in ensemble table
         # for (pdm.ens in 1:length(curr.model[["ensembleTable"]])){
         #   curr.ens <- curr.model[["ensembleTable"]][[pdm.ens]]
         # }
-
 
         # check distribution
         for (pdm.dist in 1:length(curr.model[["distribution"]])){
@@ -89,7 +87,6 @@ index.by.name <- function(D, lpds){
         curr.ens <- curr.model[["ensembleTable"]]
         if (!is.null(curr.ens)){
           # Reorganize table and move columns up
-          print("moving up ensembleTable")
           table <- move.cols.up(curr.ens)
           D[[name]][["metadata"]][["chronData"]][[cd.idx]][["chronModel"]][[cdm.idx]][["ensembleTable"]] <- table
         }
