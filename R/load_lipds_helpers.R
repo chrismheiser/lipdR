@@ -8,21 +8,38 @@
 #' @export
 #' @return none
 set.modules <- function(){
-  library(Kmisc, quietly=TRUE)
-  library(RJSONIO, quietly=TRUE)
-  library(rPython, quietly=TRUE)
-  library(jsonlite, quietly=TRUE)
+  library(tools, quietly=TRUE, verbose=FALSE)
+  library(Kmisc, quietly=TRUE, verbose=FALSE)
+  library(RJSONIO, quietly=TRUE, verbose=FALSE)
+  library(rPython, quietly=TRUE, verbose=FALSE)
+  library(jsonlite, quietly=TRUE, verbose=FALSE)
+  library(BBmisc, quietly=TRUE, verbose=FALSE)
 }
 
-# TODO: Ask user where files are stored
-# This isn't working yet because the tcltk package keeps crashing upon import
+#' Ask user where local file/folder location is.
+#' @export
+#' @return path Path to files
+get.local.path <- function(){
+  ans <- ask.how.many()
+  path.and.file <- gui.for.path(ans)
+  return(path.and.file)
+}
 
 
 #' Get list of all LiPD files in current directory
 #' @export
 #' @return f List of LiPD files w. ext
-get.list.lpd.ext <- function(){
-  f <- list.files(path=getwd(), pattern='\\.lpd$')
+get.list.lpd.ext <- function(path.and.file){
+  file <- path.and.file[["file"]]
+  # Multiple file grab. No single filename given.
+  if (is.null(file)){
+    f <- list.files(path=getwd(), pattern='\\.lpd$')
+  }
+  # Single file given. Create list of one filename.
+  else {
+    f <- list()
+    f[[1]] <- file
+  }
   return(f)
 }
 
@@ -40,9 +57,11 @@ create.tmp.dir <- function(){
 #' @param tmp Temporary directory
 #' @return none
 unzipper <- function(files, tmp){
-  sapply(files, function(f){
-    unzip(f, exdir = tmp)
-  })
+  if(length(files)>0){
+    sapply(files, function(f){
+      unzip(f, exdir = tmp)
+    })
+  }
 }
 
 #' Remove the file extension from string names
@@ -85,18 +104,17 @@ import.file.csv <- function(f){
 #' @export
 #' @return l List of jsonld data
 import.file.jsonld <- function(f){
-  l <- fromJSON(f)
+  l <- fromJSON(f, simplifyDataFrame = FALSE)
   return(l)
 }
 
 #' Return to a predetermined folder each time a process quits early from an error
-#' @export
 #' @return none
 return.to.root <- function(){
   setwd("~/Documents/code/geoChronR/lipd_R/")
 }
 
-#' Remove CSV and metadata layer from our lipd library.
+#' Remove CSV and metadata layer from our lipd library. Also, remove empties
 #' @export
 #' @param D LiPD Library
 #' @param lpds List of LiPD files in the library
@@ -104,7 +122,104 @@ return.to.root <- function(){
 remove.layers <- function(D, lpds){
   for (i in 1:length(lpds)){
     name <- lpds[[i]]
-    D[[name]] <- D[[name]][["metadata"]]
+    new.meta <- remove.rec(D[[name]][["metadata"]])
+    D[[name]] <- new.meta
   }
   return(D)
 }
+
+#' Ask if user wants to load one file or a directory with multiple files.
+#' @export
+#' @return ans Answer to prompt (s/m)
+ask.how.many <- function(){
+  ans <- readline(prompt="Are you loading one file or multiple? (s/m): ")
+  # Test if input matches what we expect. Keep prompting until valid input.
+  if(!grepl("\\<s\\>",ans) & !grepl("\\<m\\>", ans))
+  { return(ask.how.many()) }
+  # Return a valid answer
+  return(as.character(ans))
+}
+
+
+#' Open a file browsing gui to let the user pick a location
+#' @export
+#' @return path Path to file
+gui.for.path <- function(ans){
+  tryCatch(
+    { path <- file.choose() },
+  error=function(cond){
+    print("File/Directory not chosen")
+    quit(1)
+    })
+
+  # parse the dir path. don't keep the filename
+  if (ans == "m"){
+    dir.path = dirname(path)
+    one.file = NULL
+  }
+  # parse the dir path and the filename
+  else if (ans == "s"){
+    dir.path = dirname(path)
+    one.file = basename(path)
+  }
+  out.list <- list("dir" = dir.path, "file"= one.file)
+  return(out.list)
+}
+
+#' Convert column type: data frame to list
+#' @export
+#' @param table Data table
+#' @return table Converted data table
+cols.to.lists <- function(table){
+  meta.list <- list()
+
+  # columns are at index 1
+  cols <- table[[1]][["columns"]][[1]]
+
+  # loop over dim
+  for (i in 1:dim(cols)){
+    #make it a list
+    meta.list[[i]]=as.list(cols[i,])
+  }
+  # insert new columns
+  table[[1]][["columns"]] <- meta.list
+
+  return(meta.list)
+}
+
+#' Convert table type: data frame to list
+#' @export
+#' @param table Data table
+#' @return table Converted data table
+table.to.list <- function(table){
+
+  # convert table index
+  if (is.dataframe(table[[1]])){
+    table <- as.list(table[[1]])
+  }
+  # convert table
+  if (is.dataframe(table)){
+    table <- as.list(table)
+  }
+  return(table)
+}
+
+
+#' Remove all NA, NULL, and empty objects from the data structure
+#' @export
+#' @param x Data structure
+#' @return x Modified data structure
+remove.rec <- function( x ){
+  # Remove all the nulls
+  x <- x[ !is.NullOb( x )]
+  x <- x[ !is.na( x ) ]
+  x <- x[ !sapply( x, is.null ) ]
+  # Recursion
+  if( is.list(x) ){
+    # Recursive dive
+    x <- lapply( x, removeNullRec)
+  }
+  x <- x[ unlist(sapply(x, length) != 0)]
+  return(x)
+}
+

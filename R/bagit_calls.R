@@ -14,13 +14,15 @@
 #' @export
 #' @param path The path to the directory that needs to be bagged
 #' @return none
-bagit <- function(path){
-  # path is the tmp directory at LiPD folder level
-  bagitPath="~/R/bagit.py"
-  datadir <- paste0(path, "/data")
-  setwd(outdir)
+bagit <- function(data.dir, initial.dir,bagit.script=NA){
+  if(is.na(bagit.script)){
+    print("Select your bagit.py file")
+    bagit.script=file.choose()
+  }
+  Sys.chmod(bagit.script, "777")
   # do a system call for bagit on the tmp folder
-  system(paste0(bagitPath, " ", datadir))
+  system(paste0(bagit.script, " ", data.dir))
+  return()
 }
 
 
