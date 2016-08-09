@@ -4,6 +4,9 @@
 #' @return none
 save.lipds <- function(D){
 
+  # starting directory. this is where files will be saved to
+  initial.dir <- getwd()
+
   # loop by record names
   lpds <- names(D)
 
@@ -11,7 +14,10 @@ save.lipds <- function(D){
     # reference to single lipd record
     d <- D[[lpds[[i]]]]
     # call one lipd by name, and pass the name too
-    save.lipd.file(lpds[[i]], d)
+    print(sprintf("saving: %s", lpds[[i]]))
+    save.lipd.file(d, lpds[[i]])
   }
-  return()
+
+  # return back to the initial directory
+  setwd(initial.dir)
 }

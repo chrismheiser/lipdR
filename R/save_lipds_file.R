@@ -3,12 +3,15 @@
 #' @param name Name of current LiPD record
 #' @param d Metadata
 #' @return none
-save.lipd.file <- function(name, d){
+save.lipd.file <- function(d, name){
 
   # Create the folder hierarchy for Bagit
   # Make the tmp folder and move into it
   initial.dir <- getwd()
   tmp <- create.tmp.dir()
+  if (!dir.exists(tmp)){
+    dir.create(tmp)
+  }
   setwd(tmp)
 
   # Remove the lipd dir if it already exists
@@ -57,7 +60,7 @@ save.lipd.file <- function(name, d){
   # zip the top lipd directory. zip file is create one level up
   setwd(lipd.dir)
   include.files <- list.files(getwd(), recursive = TRUE)
-  zip(lipd.dir, include.files)
+  suppressAll(zip(lipd.dir, include.files))
   setwd(tmp)
 
   # rename the file
@@ -72,6 +75,11 @@ save.lipd.file <- function(name, d){
     file.copy(name.lpd, initial.dir, overwrite=TRUE)
   }
 
-  return()
+  # remove the tmp folder and contents
+  unlink(tmp, recursive=TRUE)
+
+  # return back to the initial directory
+  setwd(initial.dir)
+
 }
 

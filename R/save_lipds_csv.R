@@ -154,7 +154,10 @@ collect.csvs.section <- function(d, keys, csv.data, name){
 
 }
 
-
+#' Parse the csv value columns from the table, then split the metadata from the csv
+#' @export
+#' @param table Table of data
+#' @return table Table w/o csv, csv Value columns
 parse.table <- function(table){
 
   # list to hold each column for this table
@@ -177,7 +180,10 @@ parse.table <- function(table){
         }
 
         # remove the "number" entry for the column, then replace it with the index of this loop
-        table[["columns"]][[k]][["number"]] <- k
+        # however, if it's an ensemble table with many "numbers"/columns, then we'll keep it.
+        if (length(table[["columns"]][[k]][["number"]]) == 1){
+          table[["columns"]][[k]][["number"]] <- k
+        }
       }
     }
   }
@@ -202,8 +208,6 @@ write.csvs <- function(csv.data){
     # one csv file: list of lists. [V1: [column values], V2: [columns values], etc.]
     # write.table wants a data frame or matrix, but is able to coerce a list of lists correctly also. (tested)
     ref.name <- csv.names[[f]]
-    out.name <- paste0(ref.name, ".csv")
-    write.table(csv.data[[ref.name]], file=out.name, col.names = FALSE, row.names=FALSE, sep=",")
+    write.table(csv.data[[ref.name]], file=ref.name, col.names = FALSE, row.names=FALSE, sep=",")
   }
-  return()
 }

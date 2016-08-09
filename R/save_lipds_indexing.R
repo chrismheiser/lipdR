@@ -10,6 +10,7 @@ index.by.number <- function(d){
   # convert single entries to lists. matching structure to 1.2
   d <- idx.section(d, paleos)
   d <- idx.section(d, chrons)
+  d <- unindex.geo(d)
 
   return(d)
 }
@@ -120,4 +121,43 @@ move.cols.down <- function(table){
   table[["columns"]] <- new.cols
 
   return(table)
+}
+
+#' Convert geo from semi-flat structure back to original GeoJSON structure.
+#' @export
+#' @param d Metadata
+#' @return d Modified metadata
+unindex.geo <- function(d){
+
+  tmp <- list()
+  tmp$geometry <- list()
+  tmp$geometry$coordinates <- list()
+  tmp$properties <- list()
+  geo <- d$geo
+
+  if (!is.null(geo)){
+    names <- names(geo)
+    for (i in 1:length(names)){
+
+      # type goes in root
+      if (names[[i]] == "type"){
+        tmp$type <- geo$type
+      }
+      # geometry
+      else if (names[[i]] %in% c("latitude", "longitude", "elevation", "geometryType")){
+        if (names[[i]] == "latitude"){ tmp$geometry$coordinates[[1]] <- geo$latitude }
+        else if (names[[i]] == "longitude"){ tmp$geometry$coordinates[[2]] <- geo$longitude }
+        else if (names[[i]] == "elevation"){ tmp$geometry$coordinates[[3]] <- geo$elevation }
+        else if (names[[i]] == "geometryType"){ tmp$geometry$type <- geo$geometryType}
+      }
+
+      # properties
+      else{
+        tmp[[names[[i]]]] <- geo[[names[[i]]]]
+      }
+    } # end loop
+    d$geo <- tmp
+  } # end if
+
+  return(d)
 }
