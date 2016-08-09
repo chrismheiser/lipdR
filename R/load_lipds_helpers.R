@@ -217,7 +217,7 @@ remove.rec <- function( x ){
   # Recursion
   if( is.list(x) ){
     # Recursive dive
-    x <- lapply( x, removeNullRec)
+    x <- lapply( x, remove.rec)
   }
   x <- x[ unlist(sapply(x, length) != 0)]
   return(x)
