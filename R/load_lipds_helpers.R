@@ -223,3 +223,4 @@ remove.rec <- function( x ){
   return(x)
 }
 
+is.NullOb <- function(x) is.null(x) | all(sapply(x, is.null))
