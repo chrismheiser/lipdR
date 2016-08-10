@@ -105,6 +105,10 @@ move.cols.up <- function(table){
   return(table)
 }
 
+#' Make geo semi-flat. Remove unnecessary levels between us and data.
+#' @export
+#' @param d Metadata
+#' @return d Modified metadata
 index.geo <- function(d){
   # create a tmp list
   tmp <- list()

@@ -14,15 +14,18 @@
 #' @export
 #' @param path The path to the directory that needs to be bagged
 #' @return none
-bagit <- function(data.dir, initial.dir,bagit.script=NA){
-  if(is.na(bagit.script)){
+bagit <- function(data.dir, initial.dir){
+  # check for bagit.py in case they're working in the package folder
+  bagit.script <- file.path(initial.dir, "R", "bagit.py")
+  if(!file.exists(bagit.script)){
     print("Select your bagit.py file")
     bagit.script=file.choose()
   }
   Sys.chmod(bagit.script, "777")
   # do a system call for bagit on the tmp folder
-  system(paste0(bagit.script, " ", data.dir))
-  return()
+  ret <- system(paste0(bagit.script, " ", data.dir), ignore.stdout = TRUE, ignore.stderr = TRUE)
+  # do soft bagit if system call status returns 1 (error)
+  return(ret)
 }
 
 

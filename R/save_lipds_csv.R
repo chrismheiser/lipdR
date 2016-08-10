@@ -206,7 +206,6 @@ write.csvs <- function(csv.data){
   # loop for csv file
   for (f in 1:length(csv.names)){
     # one csv file: list of lists. [V1: [column values], V2: [columns values], etc.]
-    # write.table wants a data frame or matrix, but is able to coerce a list of lists correctly also. (tested)
     ref.name <- csv.names[[f]]
     write.table(csv.data[[ref.name]], file=ref.name, col.names = FALSE, row.names=FALSE, sep=",")
   }

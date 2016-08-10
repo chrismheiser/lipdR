@@ -55,13 +55,13 @@ save.lipd.file <- function(d, name){
 
   # bag the lipd directory
   # lipd directory is lipd name without extension
-  bagit(lipd2.dir, initial.dir)
-
-  # zip the top lipd directory. zip file is create one level up
-  setwd(lipd.dir)
-  include.files <- list.files(getwd(), recursive = TRUE)
-  suppressAll(zip(lipd.dir, include.files))
-  setwd(tmp)
+  status <- bagit(lipd2.dir, initial.dir)
+  # if bagit success, zip the lipd.dir. if bagit failed, zip lipd.dir2
+  if (status == 0){
+    zipper(lipd.dir, tmp)
+  } else if (status == 1){
+    zipper(lipd.dir2, lipd.dir)
+  }
 
   # rename the file
   name.zip <- paste0(name, ".zip")

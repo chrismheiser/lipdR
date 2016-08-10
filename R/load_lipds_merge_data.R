@@ -11,9 +11,7 @@ merge.main <- function(D, lpds){
 
   for (lipd in 1:length(lpds)){
     name <- lpds[[lipd]]
-    # merge paleo
     D[[name]] <- merge.data.lipd(D[[name]], paleo)
-    # merge chron
     D[[name]] <- merge.data.lipd(D[[name]], chron)
   }
 
@@ -27,11 +25,8 @@ merge.main <- function(D, lpds){
 #' @return d Modified LiPD metadata
 merge.data.lipd <- function(d, keys){
 
-    # paleoData or chronData
     key1 <- keys[[1]]
-    # measurement table
     key2 <- keys[[2]]
-    # model table
     key3 <- keys[[3]]
 
     # d$chronData
@@ -64,7 +59,7 @@ merge.data.lipd <- function(d, keys){
       if(any(names(pc[[i]])==key3)){
 
         # loop in models
-        chronModel=vector(mode="list",length=length(pc[[i]][[key3]]))
+        chronModel <- vector(mode="list",length=length(pc[[i]][[key3]]))
 
         # d$chronData[[i]]$chronModel
         for (j in 1:length(pc[[i]][[key3]])){
@@ -79,7 +74,7 @@ merge.data.lipd <- function(d, keys){
             csv.cols <- d[["csv"]][[filename]]
             meta.cols <- table[["columns"]]
             columns <- merge.csv(csv.cols, meta.cols)
-            toCopy = which(names(table)!="columns")
+            toCopy <- which(names(table)!="columns")
             for(tt in toCopy){
               chronModel[[j]]$summaryTable[[names(table)[tt]]] <- table[[names(table)[tt]]]
             }
@@ -98,15 +93,15 @@ merge.data.lipd <- function(d, keys){
             csv.cols <- d[["csv"]][[filename]]
             meta.cols <- table[["columns"]]
             columns <- merge.csv(csv.cols, meta.cols)
-            toCopy = which(names(table)!="columns")
+            toCopy <- which(names(table)!="columns")
             for(tt in toCopy){
-              chronModel[[j]]$ensembleTable[[names(table)[tt]]]=table[[names(table)[tt]]]
+              chronModel[[j]]$ensembleTable[[names(table)[tt]]] <- table[[names(table)[tt]]]
             }
-            chronModel[[j]]$ensembleTable$columns = columns
+            chronModel[[j]]$ensembleTable$columns <- columns
           }
 
           # distribution tables
-          distributionTable = vector(mode = "list",length = length(pc[[i]][[key3]][[j]][["distributionTable"]][[1]])[1])
+          distributionTable <- vector(mode = "list",length = length(pc[[i]][[key3]][[j]][["distributionTable"]][[1]])[1])
           if(length(distributionTable)>=1){
 
             # d$chronData[[i]]$chronModel[[j]]$distributionTable
@@ -122,24 +117,24 @@ merge.data.lipd <- function(d, keys){
                 columns  <- merge.csv(csv.cols, meta.cols)
                 toCopy <- which(names(table)!="columns")
                 for(tt in toCopy){
-                  distributionTable[[k]][[names(table)[tt]]]=table[[names(table)[tt]]]
+                  distributionTable[[k]][[names(table)[tt]]] <- table[[names(table)[tt]]]
                 }
-                distributionTable[[k]]$columns = columns
+                distributionTable[[k]]$columns <- columns
 
               }
             }
-            chronModel[[j]]$distributionTable=distributionTable
+            chronModel[[j]]$distributionTable <- distributionTable
           }
 
           #add in anything that we didn't recreate
-          icm=names(pc[[i]][[key3]][[j]])
-          cmnames=names(chronModel[[j]])
-          toAdd = which(!(icm %in% cmnames))
+          icm <- names(pc[[i]][[key3]][[j]])
+          cmnames <- names(chronModel[[j]])
+          toAdd <- which(!(icm %in% cmnames))
           for(ta in 1:length(toAdd)){
-            chronModel[[j]][[icm[toAdd[ta]]]]=pc[[i]][[key3]][[j]][[icm[toAdd[ta]]]]
+            chronModel[[j]][[icm[toAdd[ta]]]] <- pc[[i]][[key3]][[j]][[icm[toAdd[ta]]]]
           }
         } ##end chronModel loop
-        d[["metadata"]][[key1]][[i]]$chronModel = chronModel
+        d[["metadata"]][[key1]][[i]]$chronModel <- chronModel
 
       }#end chronModel
 
