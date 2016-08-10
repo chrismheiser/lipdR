@@ -41,6 +41,11 @@ load.lipds <- function(){
   # We no longer need the csv and metadata separate parts. Link straight to the data.
   D <- remove.layers(D, lpds)
 
+  # If there's only one lpds object in D, move it to the front
+  if(length(D)==1){
+    D <- D[[1]]
+  }
+
   # Move back to the inital directory (Prior to temp folder)
   setwd(initial.dir)
 
