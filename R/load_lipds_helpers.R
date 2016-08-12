@@ -91,6 +91,12 @@ get.list.jsonld <- function(){
 #' @return t Data frame of csv data
 import.file.csv <- function(f){
   t <- read.csv(f, header=FALSE)
+  # convert data frame to list
+  t <- as.list(t)
+  # convert columns from ANY type to numeric
+  for (i in 1:length(t)){
+    t[[i]] <- as.numeric(t[[i]])
+  }
   return(t)
 }
 
@@ -116,7 +122,7 @@ return.to.root <- function(){
 remove.layers <- function(D, lpds){
   for (i in 1:length(lpds)){
     name <- lpds[[i]]
-    new.meta <- remove.rec(D[[name]][["metadata"]])
+    new.meta <- remove.empty.rec(D[[name]][["metadata"]])
     D[[name]] <- new.meta
   }
   return(D)

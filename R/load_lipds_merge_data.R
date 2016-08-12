@@ -166,8 +166,8 @@ merge.csv <- function(csv.cols, meta.cols){
       meta.cols[[i]][["values"]] <- do.call(rbind, tmp)
     }
     else {
-      # assign in the values as numeric
-      meta.cols[[i]][["values"]] <- as.numeric(csv.cols[,meta.cols[[i]][["number"]]])
+      # assign values. already numeric
+      meta.cols[[i]][["values"]] <- csv.cols[meta.cols[[i]][["number"]]]
     }
 
   }

@@ -3,16 +3,19 @@
 #' @param x Data structure
 #' @return x Modified data structure
 remove.empty.rec <- function( x ){
-  # Remove all the nulls
-  x <- x[ !is.NullOb( x )]
-  x <- x[ !is.na( x ) ]
-  x <- x[ !sapply( x, is.null ) ]
-  # Recursion
-  if( is.list(x) ){
-    # Recursive dive
-    x <- lapply( x, remove.empty.rec)
+  # don't process matrices. it'll turn them to lists and that ruins ensemble data.
+  if (!is.matrix(x)){
+    # Remove all the nulls
+    x <- x[ !is.NullOb( x )]
+    x <- x[ !is.na( x ) ]
+    x <- x[ !sapply( x, is.null ) ]
+    # Recursion
+    if( is.list(x) ){
+      # Recursive dive
+      x <- lapply( x, remove.empty.rec)
+    }
+    x <- x[ unlist(sapply(x, length) != 0)]
   }
-  x <- x[ unlist(sapply(x, length) != 0)]
   return(x)
 }
 
