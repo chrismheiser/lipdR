@@ -163,7 +163,7 @@ merge.csv <- function(csv.cols, meta.cols){
         tmp[[j]] <- csv.cols[[nums[[j]]]]
       }
       # turn the columns into a matrix
-      meta.cols[[i]][["values"]] <- do.call(rbind, tmp)
+      meta.cols[[i]][["values"]] <- t(do.call(rbind, tmp))
     }
     else {
       # assign values. already numeric

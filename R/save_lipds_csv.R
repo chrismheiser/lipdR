@@ -226,7 +226,7 @@ write.csvs <- function(csv.data){
           tmp <- tryCatch({
             cbind(col, deparse.level = 0)
           }, error = function(cond){
-            print("cbind error")
+            print(sprintf("cbind error: %s", ref.name))
             return(NULL)
           })
         }else{
@@ -234,9 +234,24 @@ write.csvs <- function(csv.data){
           tmp <- tryCatch({
             cbind(tmp, col, deparse.level = 0)
           }, error = function(cond){
-            print("cbind error")
-            return(NULL)
+            if(is.matrix(col)){
+              tmp <- tryCatch({
+                col <- t(col)
+                cbind(tmp, col, deparse.level = 0)
+              }, error = function(cond){
+                print(sprintf("cbind error: %s", ref.name))
+                return(NULL)
+              })
+            }
+            else{
+              return(NULL)
+            }
           })
+          # cbind didn't work here, it's possible the matrix is transposed wrong.
+          # give it another try after transposing it.
+          if (is.null(tmp) & is.matrix(col)){
+
+          }
         }
       }
       if (!is.null(tmp)){
@@ -245,8 +260,7 @@ write.csvs <- function(csv.data){
           success <- TRUE
         }, error=function(cond){
           print(sprintf("Error writing csv: %s", ref.name))
-          # print(sprintf("cannot write LiPD csv: %s", ref.name))
-          # print(sprintf("columns lengths are not equal, please resolve"))
+          print("Check data for unequal row or column lengths")
           return(NULL)
         })
         # end try
