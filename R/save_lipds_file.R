@@ -5,6 +5,9 @@
 #' @return none
 save.lipd.file <- function(d, name){
 
+  # verify name format
+  name <- verify.name(name)
+
   # Create the folder hierarchy for Bagit
   # Make the tmp folder and move into it
   initial.dir <- getwd()
@@ -35,45 +38,52 @@ save.lipd.file <- function(d, name){
   # collect all csv data into an organized list
   all.data <- collect.csvs(name, d)
 
+  # clean csv
+  all.data[["csv"]] <- clean.csv(all.data[["csv"]])
+
   # use the organized list to write out all csv files
-  write.csvs(all.data[["csv"]])
+  csv.success <- write.csvs(all.data[["csv"]])
 
-  # remove all empty objs and null values
-  j <- remove.empty.rec(all.data[["metadata"]])
+  # only continue if csv files were written
+  if (csv.success){
+    # remove all empty objs and null values
+    j <- remove.empty.rec(all.data[["metadata"]])
 
-  # turn data structure into json
-  j <- toJSON(j, pretty=TRUE, auto_unbox = TRUE)
+    # turn data structure into json
+    j <- toJSON(j, pretty=TRUE, auto_unbox = TRUE)
 
-  # filename.lpd
-  lpd.jsonld <- paste0(name, ".jsonld")
+    # filename.lpd
+    lpd.jsonld <- paste0(name, ".jsonld")
 
-  # write json to file
-  write(j, file=lpd.jsonld)
+    # write json to file
+    write(j, file=lpd.jsonld)
 
-  # move up to lipd dir level
-  setwd(lipd2.dir)
+    # move up to lipd dir level
+    setwd(lipd2.dir)
 
-  # bag the lipd directory
-  # lipd directory is lipd name without extension
-  status <- bagit(lipd2.dir, initial.dir)
-  # if bagit success, zip the lipd.dir. if bagit failed, zip lipd.dir2
-  if (status == 0){
-    zipper(lipd.dir, tmp)
-  } else if (status == 1){
-    zipper(lipd.dir2, lipd.dir)
-  }
+    # bag the lipd directory
+    # lipd directory is lipd name without extension
+    bag.success <- bagit(lipd2.dir, initial.dir)
+    # if bagit success, zip the lipd.dir. if bagit failed, zip lipd.dir2
+    if (bag.success){
+      zipper(lipd.dir, tmp)
+    } else if (!bag.success){
+      zipper(lipd.dir2, lipd.dir)
+    }
 
-  # rename the file
-  name.zip <- paste0(name, ".zip")
-  name.lpd <- paste0(name, ".lpd")
-  if (file.exists(name.zip)){
-    file.rename(name.zip, name.lpd)
-  }
+    # rename the file
+    name.zip <- paste0(name, ".zip")
+    name.lpd <- paste0(name, ".lpd")
+    if (file.exists(name.zip)){
+      file.rename(name.zip, name.lpd)
+    }
 
-  # move file to initial directory
-  if(file.exists(name.lpd)){
-    file.copy(name.lpd, initial.dir, overwrite=TRUE)
-  }
+    # move file to initial directory
+    if(file.exists(name.lpd)){
+      file.copy(name.lpd, initial.dir, overwrite=TRUE)
+    }
+
+  } # end csv.success
 
   # remove the tmp folder and contents
   unlink(tmp, recursive=TRUE)
@@ -82,4 +92,5 @@ save.lipd.file <- function(d, name){
   setwd(initial.dir)
 
 }
+
 

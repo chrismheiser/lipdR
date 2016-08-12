@@ -14,6 +14,7 @@ set.modules <- function(){
   suppressPackageStartupMessages(library(rPython, quietly=TRUE, verbose=FALSE))
   suppressPackageStartupMessages(library(jsonlite, quietly=TRUE, verbose=FALSE))
   suppressPackageStartupMessages(library(BBmisc, quietly=TRUE, verbose=FALSE))
+  suppressPackageStartupMessages(library(data.table, quietly=TRUE, verbose=FALSE))
 }
 
 #' Ask user where local file/folder location is.
@@ -43,13 +44,6 @@ get.list.lpd.ext <- function(path.and.file){
   return(f)
 }
 
-#' Create a temporary working directory
-#' @export
-#' @return d Temporary directory path
-create.tmp.dir <- function(){
-  d <- tempdir()
-  return(d)
-}
 
 #' Unzip all LiPD files to the temporary directory
 #' @export
@@ -205,22 +199,5 @@ table.to.list <- function(table){
 }
 
 
-#' Remove all NA, NULL, and empty objects from the data structure
-#' @export
-#' @param x Data structure
-#' @return x Modified data structure
-remove.rec <- function( x ){
-  # Remove all the nulls
-  x <- x[ !is.NullOb( x )]
-  x <- x[ !is.na( x ) ]
-  x <- x[ !sapply( x, is.null ) ]
-  # Recursion
-  if( is.list(x) ){
-    # Recursive dive
-    x <- lapply( x, remove.rec)
-  }
-  x <- x[ unlist(sapply(x, length) != 0)]
-  return(x)
-}
 
-is.NullOb <- function(x) is.null(x) | all(sapply(x, is.null))
+

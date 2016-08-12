@@ -162,11 +162,12 @@ merge.csv <- function(csv.cols, meta.cols){
       for (j in 1:length(nums)){
         tmp[[j]] <- csv.cols[[nums[[j]]]]
       }
-      meta.cols[[i]][["values"]] <- tmp
+      # turn the columns into a matrix
+      meta.cols[[i]][["values"]] <- do.call(rbind, tmp)
     }
     else {
-      # assign in the values
-      meta.cols[[i]][["values"]] <- csv.cols[,meta.cols[[i]][["number"]]]
+      # assign in the values as numeric
+      meta.cols[[i]][["values"]] <- as.numeric(csv.cols[,meta.cols[[i]][["number"]]])
     }
 
   }

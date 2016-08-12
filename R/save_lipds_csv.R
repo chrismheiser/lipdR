@@ -181,7 +181,7 @@ parse.table <- function(table){
 
         # remove the "number" entry for the column, then replace it with the index of this loop
         # however, if it's an ensemble table with many "numbers"/columns, then we'll keep it.
-        if (length(table[["columns"]][[k]][["number"]]) == 1){
+        if (length(table[["columns"]][[k]][["number"]]) == 1 | is.null(table[["columns"]][[k]][["number"]])){
           table[["columns"]][[k]][["number"]] <- k
         }
       }
@@ -202,11 +202,61 @@ parse.table <- function(table){
 #' @return none
 write.csvs <- function(csv.data){
 
+  success <- TRUE
   csv.names <- names(csv.data)
+
   # loop for csv file
   for (f in 1:length(csv.names)){
-    # one csv file: list of lists. [V1: [column values], V2: [columns values], etc.]
-    ref.name <- csv.names[[f]]
-    write.table(csv.data[[ref.name]], file=ref.name, col.names = FALSE, row.names=FALSE, sep=",")
+    tmp <- matrix()
+
+    # only keep writing if all csvs have been successful.
+    if (!is.null(success)){
+      # one csv file: list of lists. [V1: [column values], V2: [columns values], etc.]
+      ref.name <- csv.names[[f]]
+      for (i in 1:length(csv.data[[ref.name]])){
+        col <- csv.data[[ref.name]][[i]]
+
+        # convert to numeric if needed
+        if (is.list(col)){
+          col <- as.numeric(col)
+        }
+        # check if tmp matrix has data or is fresh.
+        if(all(is.na(tmp))){
+          # fresh, so just bind the col itself
+          tmp <- tryCatch({
+            cbind(col, deparse.level = 0)
+          }, error = function(cond){
+            print("cbind error")
+            return(NULL)
+          })
+        }else{
+          # not fresh, bind the existing with the col
+          tmp <- tryCatch({
+            cbind(tmp, col, deparse.level = 0)
+          }, error = function(cond){
+            print("cbind error")
+            return(NULL)
+          })
+        }
+      }
+      if (!is.null(tmp)){
+        success <- tryCatch({
+          write.table(tmp, file=ref.name, col.names = FALSE, row.names=FALSE, sep=",")
+          success <- TRUE
+        }, error=function(cond){
+          print(sprintf("Error writing csv: %s", ref.name))
+          # print(sprintf("cannot write LiPD csv: %s", ref.name))
+          # print(sprintf("columns lengths are not equal, please resolve"))
+          return(NULL)
+        })
+        # end try
+      } # end write success
+    } # end if success
+  } # end loop
+
+  if (is.null(success)){
+    success <- FALSE
   }
+
+  return(success)
 }
