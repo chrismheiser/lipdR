@@ -24,7 +24,7 @@ convert.version <- function(D){
   return(D)
 }
 
-# Get the version number from metadata
+#' Get the version number from metadata
 #' @export
 #' @param d LiPD Metadata
 #' @return version LiPD version number
