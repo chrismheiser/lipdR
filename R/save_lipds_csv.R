@@ -1,4 +1,4 @@
-#' Collect and remove csv. Main function
+#' Collect csvs main. Collect and remove csv "values" fields.
 #' @export
 #' @param name Name of current LiPD record
 #' @param d Metadata
@@ -27,6 +27,7 @@ collect.csvs <- function(name, d){
 #' @param d Metadata w. values
 #' @param keys Section keys
 #' @param csv.data Running collection of csv data
+#' @param name LiPD data set name
 #' @return all.data List holding the running collection of separated csv and metadata
 collect.csvs.section <- function(d, keys, csv.data, name){
   key1 <- keys[[1]]
@@ -199,7 +200,7 @@ parse.table <- function(table){
 #' csv.data format: [ some_filename.csv $columns.data ]
 #' @export
 #' @param csv.data List of Lists of csv column data
-#' @return none
+#' @return success Boolean for successful csv write
 write.csvs <- function(csv.data){
 
   success <- TRUE

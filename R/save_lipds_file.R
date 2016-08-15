@@ -1,7 +1,7 @@
 #' Main function. Run all save sub-routines for one LiPD record
 #' @export
-#' @param name Name of current LiPD record
 #' @param d Metadata
+#' @param name Name of current LiPD record
 #' @return none
 save.lipd.file <- function(d, name){
 

@@ -21,7 +21,7 @@ save.lipds <- function(D){
 #' Parse one data record
 #' @export
 #' @param d LiPD data
-#'@param name Data set name
+#' @param name Data set name
 #' @return none
 single.parse <- function(d, name=NA){
   # save one lipd

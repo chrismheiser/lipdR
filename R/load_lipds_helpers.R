@@ -19,7 +19,7 @@ set.modules <- function(){
 
 #' Ask user where local file/folder location is.
 #' @export
-#' @return path Path to files
+#' @return path.and.file Path to files
 get.local.path <- function(){
   ans <- ask.how.many()
   path.and.file <- gui.for.path(ans)
@@ -29,6 +29,7 @@ get.local.path <- function(){
 
 #' Get list of all LiPD files in current directory
 #' @export
+#' @param path.and.file Target directory and 1+ files
 #' @return f List of LiPD files w. ext
 get.list.lpd.ext <- function(path.and.file){
   file <- path.and.file[["file"]]
@@ -61,7 +62,7 @@ unzipper <- function(files, tmp){
 #' Remove the file extension from string names
 #' @export
 #' @param files_ext List of LiPD filenames w. ext
-#' @return none
+#' @return x LiPD filename
 strip.extension <- function(files_ext){
   x <- sapply(files_ext, function(f){
     strip_extension(f)
@@ -88,6 +89,7 @@ get.list.jsonld <- function(){
 
 #' Read in data from a csv file
 #' @export
+#' @param f Target file
 #' @return t Data frame of csv data
 import.file.csv <- function(f){
   t <- read.csv(f, header=FALSE)
@@ -102,6 +104,7 @@ import.file.csv <- function(f){
 
 #' Read in data from a jsonld file
 #' @export
+#' @param f Target file
 #' @return l List of jsonld data
 import.file.jsonld <- function(f){
   l <- fromJSON(f, simplifyDataFrame = FALSE)
@@ -143,6 +146,7 @@ ask.how.many <- function(){
 
 #' Open a file browsing gui to let the user pick a location
 #' @export
+#' @param ans Single or multiple files
 #' @return path Path to file
 gui.for.path <- function(ans){
   tryCatch(

@@ -4,7 +4,7 @@
 ## current LiPD version structure
 ###############################################
 
-#' Convert LiPD version whenever necessary
+#' Convert LiPD version structure whenever necessary
 #' @export
 #' @param D LiPD Library
 #' @return D modified LiPD Library
@@ -25,6 +25,9 @@ convert.version <- function(D){
 }
 
 # Get the version number from metadata
+#' @export
+#' @param d LiPD Metadata
+#' @return version LiPD version number
 get.version <- function(d){
   version <- as.numeric(d[["metadata"]][["LiPDVersion"]])
   if (length(version)==0){

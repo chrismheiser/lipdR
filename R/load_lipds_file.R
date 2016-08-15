@@ -37,6 +37,9 @@ load.lipd.files <- function(tmp, files_noext){
   return(out.list)
 }
 
+#' Retrieve and import csv and jsonld files in the current directory.
+#' @export
+#' @return data.list List of data for one LiPD file
 get.data <- function(){
   data.list <- list()
   # list of csv files

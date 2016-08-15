@@ -12,7 +12,7 @@ remove.empty.rec <- function( x ){
     # Recursion
     if( is.list(x) ){
       # Recursive dive
-      x <- lapply( x, remove.empty.rec)
+      x <- lapply(x, remove.empty.rec)
     }
     x <- x[ unlist(sapply(x, length) != 0)]
   }
@@ -34,9 +34,11 @@ create.tmp.dir <- function(){
   return(d)
 }
 
-#' Check if metadata path exists
+#' Check if metadata path exists. Combine path and i to check for existence
 #' @export
-#' @return d Temporary directory path
+#' @param path Path in metadata
+#' @param i Next path level.
+#' @return dat Data found or null
 has.data <- function(path, i){
   dat <- tryCatch({
     dat <- path[[i]]

@@ -1,4 +1,4 @@
-#' Main indexing function.
+#' Main indexing. Convert all index-by-name to index-by-number.
 #' @export
 #' @param d Metadata
 #' @return d Modified metadata
@@ -17,7 +17,7 @@ index.by.number <- function(d){
 
 #' Index a single section. Paleo or Chron
 #' @export
-#' @param d Metadata
+#' @param d LiPD Metadata
 #' @param keys Section keys
 #' @return d Modified metadata
 idx.section <- function(d, keys){

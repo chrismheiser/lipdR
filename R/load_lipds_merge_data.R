@@ -3,7 +3,11 @@
 ## Merge metadata and csv into one LiPD object
 ###############################################
 
-
+#' Merge Main. Call the individual steps of merge for each file.
+#' @export
+#' @param D LiPD Library
+#' @param lpds LiPD names
+#' @return D Merged LiPD Library
 merge.main <- function(D, lpds){
 
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
@@ -145,7 +149,7 @@ merge.data.lipd <- function(d, keys){
 
 
 #' Merge CSV data into the metadata
-#' @exports
+#' @export
 #' @param csv.cols CSV data for this file
 #' @param meta.cols Target metadata columns
 #' @return meta.cols Modified metadata columns
