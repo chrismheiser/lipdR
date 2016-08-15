@@ -11,10 +11,8 @@ set.modules <- function(){
   suppressPackageStartupMessages(library(tools, quietly=TRUE, verbose=FALSE))
   suppressPackageStartupMessages(library(Kmisc, quietly=TRUE, verbose=FALSE))
   suppressPackageStartupMessages(library(RJSONIO, quietly=TRUE, verbose=FALSE))
-  suppressPackageStartupMessages(library(rPython, quietly=TRUE, verbose=FALSE))
   suppressPackageStartupMessages(library(jsonlite, quietly=TRUE, verbose=FALSE))
   suppressPackageStartupMessages(library(BBmisc, quietly=TRUE, verbose=FALSE))
-  suppressPackageStartupMessages(library(data.table, quietly=TRUE, verbose=FALSE))
 }
 
 #' Ask user where local file/folder location is.
