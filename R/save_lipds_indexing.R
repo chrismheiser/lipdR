@@ -145,8 +145,8 @@ unindex.geo <- function(d){
       }
       # geometry
       else if (names[[i]] %in% c("latitude", "longitude", "elevation", "geometryType")){
-        if (names[[i]] == "latitude"){ tmp$geometry$coordinates[[1]] <- geo$latitude }
-        else if (names[[i]] == "longitude"){ tmp$geometry$coordinates[[2]] <- geo$longitude }
+        if (names[[i]] == "latitude"){ tmp$geometry$coordinates[[1]] <- geo$longitude }
+        else if (names[[i]] == "longitude"){ tmp$geometry$coordinates[[2]] <- geo$latitude }
         else if (names[[i]] == "elevation"){ tmp$geometry$coordinates[[3]] <- geo$elevation }
         else if (names[[i]] == "geometryType"){ tmp$geometry$type <- geo$geometryType}
       }

@@ -131,8 +131,8 @@ index.geo <- function(d){
       names <- names(geo$geometry)
       for (i in 1:length(names)){
         if (names[[i]] == "coordinates"){
-          tmp$latitude <- geo$geometry$coordinates[[1]]
-          tmp$longitude <- geo$geometry$coordinates[[2]]
+          tmp$longitude <- geo$geometry$coordinates[[1]]
+          tmp$latitude <- geo$geometry$coordinates[[2]]
           if (length(geo$geometry$coordinates) == 3){
             tmp$elevation <- geo$geometry$coordinates[[3]]
           }
