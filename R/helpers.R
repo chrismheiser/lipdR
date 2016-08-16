@@ -57,6 +57,9 @@ has.data <- function(path, i){
   }, error=function(cond){
     return(NULL)
   })
+  if (is.NullOb(dat)){
+    dat <- NULL
+  }
   return(dat)
 }
 
