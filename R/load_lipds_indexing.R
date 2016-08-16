@@ -36,7 +36,7 @@ index.section <- function(d, keys){
   key3 <- keys[[3]]
 
   # d$paleoData
-  pc <- has.data(d[["metadata"]][[key1]])
+  pc <- has.data(d[["metadata"]], key1)
 
   # section
   if (!is.null(pc)){
@@ -46,7 +46,7 @@ index.section <- function(d, keys){
       for (j in 1:length(pc[[i]][[key2]])){
 
         # check in measurement table
-        if (!is.null(has.data(pc[[i]][[key2]][[j]]))){
+        if (!is.null(has.data(pc[[i]][[key2]], j))){
           new.table <- move.cols.up(pc[[i]][[key2]][[j]])
           d[["metadata"]][[key1]][[i]][[key2]][[j]] <- new.table
         }
@@ -56,19 +56,19 @@ index.section <- function(d, keys){
       for (j in 1:length(pc[[i]][[key3]])){
 
         # summary
-        if (!is.null(has.data(pc[[i]][[key3]][[j]][["summaryTable"]]))){
+        if (!is.null(has.data(pc[[i]][[key3]][[j]], "summaryTable"))){
           new.table <- move.cols.up(pc[[i]][[key3]][[j]][["summaryTable"]])
           d[["metadata"]][[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new.table
-        } # end summary
+      } # end summary
 
         # ensemble
-        if (!is.null(has.data(pc[[i]][[key3]][[j]][["ensembleTable"]]))){
+        if (!is.null(has.data(pc[[i]][[key3]][[j]], "ensembleTable"))){
           new.table <- move.cols.up(pc[[i]][[key3]][[j]][["ensembleTable"]])
           d[["metadata"]][[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new.table
         } # end ensemble
 
         # distribution
-        if(!is.null(has.data(pc[[i]][[key3]][[j]][["distributionTable"]]))){
+        if(!is.null(has.data(pc[[i]][[key3]][[j]], "distributionTable"))){
           for (k in 1:length(pc[[i]][[key3]][[j]][["distributionTable"]])){
             new.table <- move.cols.up(pc[[i]][[key3]][[j]][["distributionTable"]][[k]])
             d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new.table
