@@ -9,7 +9,7 @@
 #' @return D LiPD Library
 load.lipds <- function(){
   set.modules()
-  options( warn = -1 )
+  options(warn = -1)
 
   # Ask user where files are stored
   path.and.file <- get.local.path()
