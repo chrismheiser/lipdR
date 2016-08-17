@@ -92,35 +92,43 @@ move.cols.down <- function(table){
   new.cols <- list()
 
   # get a list of variableNames from the columns
+  tnames <- names(table)
   for (i in 1:length(table)){
+    # if it's a list (column), then add it to tmp by index number
     if (is.list(table[[i]])){
-      tmp[[i]] <- try({
-        tmp[[i]] <- table[[i]][["variableName"]]
-      })
+      # tmp[[i]] <- try({
+      #   tmp[[i]] <- table[[i]][["variableName"]]
+      # })
+      new.cols[[i]] <- table[[i]]
+    }
+    else {
+      tmp[[tnames[[i]]]] <- table[[i]]
     }
   }
 
-  # remove all null elements
-  tmp <- tmp[!sapply(tmp, is.null)]
-
-  # make new list by number
-  if (length(tmp)>0){
-    for (i in 1:length(tmp)){
-      # get col data
-      if (!is.null(tmp[[i]])){
-        one.col <- table[[tmp[[i]]]]
-        # move data to new cols list
-        new.cols[[i]] <- one.col
-        # remove entry from table
-        table[[tmp[[i]]]] <- NULL
-      }
-    }
-  }
+  # # remove all null elements
+  # tmp <- tmp[!sapply(tmp, is.null)]
+  #
+  # # make new list by number
+  # if (length(tmp)>0){
+  #   for (i in 1:length(tmp)){
+  #     # get col data
+  #     if (!is.null(tmp[[i]])){
+  #       one.col <- table[[tmp[[i]]]]
+  #       # move data to new cols list
+  #       new.cols[[i]] <- one.col
+  #       # remove entry from table
+  #       table[[tmp[[i]]]] <- NULL
+  #     }
+  #   }
+  # }
 
   # set columns inside [["columns"]] list in table
-  table[["columns"]] <- new.cols
+  # table[["columns"]] <- new.cols
+  tmp[["columns"]] <- new.cols
 
-  return(table)
+
+  return(tmp)
 }
 
 #' Convert geo from semi-flat structure back to original GeoJSON structure.
