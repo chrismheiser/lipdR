@@ -24,7 +24,7 @@ load.lipds <- function(){
   lpds_ext <- get.list.lpd.ext(path.and.file)
   lpds <- strip.extension(lpds_ext)
 
-  tryCatch({
+  # tryCatch({
     # Unzip the lipd files to the temp workspace
     unzipper(lpds_ext, tmp)
 
@@ -47,9 +47,9 @@ load.lipds <- function(){
     if(length(D)==1){
       D <- D[[1]]
     }
-  }, error = function(cond){
-    print("Error importing files")
-  })
+  # }, error = function(cond){
+  #   print("Error importing files")
+  # })
 
   # Move back to the inital directory (Prior to temp folder)
   setwd(working.dir)

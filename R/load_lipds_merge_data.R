@@ -92,6 +92,7 @@ merge.data.lipd <- function(d, keys){
             # d$chronData[[i]]$chronModel[[j]]$ensembleTable[[1]] - only one per model
             dat <- has.data(pc[[i]][[key3]][[j]], "ensembleTable")
             if (!is.null(dat)){
+              table <- pc[[i]][[key3]][[j]][["ensembleTable"]]
               # get filename
               filename <- table[["filename"]]
               if (!is.null(filename)){
