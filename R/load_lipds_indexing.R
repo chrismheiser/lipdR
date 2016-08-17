@@ -99,8 +99,12 @@ move.cols.up <- function(table){
     # loop for each column
     for (i in 1:col.len){
       # get the variable name
-      vn <- table[["columns"]][[i]][["variableName"]]
-      table[[vn]] <- table[["columns"]][[i]]
+      try(vn <- table[["columns"]][[i]][["variableName"]])
+      if (is.null(vn)){
+        table[[i]] <- table[["columns"]][[i]]
+      } else {
+        table[[vn]] <- table[["columns"]][[i]]
+      }
     }
     # remove the columns item from table
     table[["columns"]] <- NULL
