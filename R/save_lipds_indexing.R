@@ -100,6 +100,14 @@ move.cols.down <- function(table){
       #   tmp[[i]] <- table[[i]][["variableName"]]
       # })
       new.cols[[i]] <- table[[i]]
+      vn <- tryCatch({
+        vn <- table[[i]][["variableName"]]
+      }, error = function(cond){
+        return(NULL)
+      })
+      if (is.null(vn)){
+        new.cols[[i]][["variableName"]] <- tnames[[i]]
+      }
     }
     else {
       tmp[[tnames[[i]]]] <- table[[i]]
