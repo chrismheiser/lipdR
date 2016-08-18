@@ -85,7 +85,7 @@ import.file.csv <- function(f){
   t <- as.list(t)
   # convert columns from ANY type to numeric
   for (i in 1:length(t)){
-    t[[i]] <- as.numeric(t[[i]])
+    t[[i]] <- as.data.frame(t[[i]])
   }
   return(t)
 }
