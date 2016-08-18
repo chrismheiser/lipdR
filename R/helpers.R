@@ -147,3 +147,105 @@ verify.name <- function(x){
   x <- gsub("[.]", "-", x)
   return(x)
 }
+
+#' Make geo semi-flat. Remove unnecessary levels between us and data.
+#' @export
+#' @param d Metadata
+#' @return d Modified metadata
+index.geo <- function(d){
+  # create a tmp list
+  tmp <- list()
+  geo <- d$metadata$geo
+
+  if (!is.null(geo)){
+    # properties
+    if (!is.null(geo$properties)){
+      gnames <- names(geo$properties)
+      for (i in 1:length(gnames)){
+        tmp[[gnames[[i]]]] <- geo$properties[[i]]
+      }
+    } # end properties
+
+    # geometry
+    if (!is.null(geo$geometry)){
+      gnames <- names(geo$geometry)
+      for (i in 1:length(gnames)){
+        if (gnames[[i]] == "coordinates"){
+          tmp$longitude <- geo$geometry$coordinates[[1]]
+          tmp$latitude <- geo$geometry$coordinates[[2]]
+          if (length(geo$geometry$coordinates) == 3){
+            tmp$elevation <- geo$geometry$coordinates[[3]]
+          }
+        }
+        else if (gnames[[i]] == "type"){
+          tmp$geometryType <- geo$geometry[[i]]
+        }
+        else{
+          tmp[[gnames[[i]]]] <- geo$geometry[[i]]
+        }
+      }
+    } # end geometry
+
+    # root geo
+    gnames <- names(geo)
+    for (i in 1:length(gnames))
+      if (gnames[[i]] != "geometry" & gnames[[i]] != "properties"){
+        tmp[[gnames[[i]]]] <- geo[[gnames[[i]]]]
+      }
+
+    # set the new data in d
+    d$metadata$geo <- tmp
+  }
+  return(d)
+}
+
+#' Convert geo from semi-flat structure back to original GeoJSON structure.
+#' @export
+#' @param d Metadata
+#' @return d Modified metadata
+unindex.geo <- function(d){
+
+  tmp <- list()
+  tmp$geometry <- list()
+  tmp$geometry$coordinates <- list()
+  tmp$properties <- list()
+  geo <- d$geo
+
+  if (!is.null(geo)){
+    gnames <- names(geo)
+    for (i in 1:length(gnames)){
+
+      # type goes in root
+      if (gnames[[i]] == "type"){
+        tmp$type <- geo$type
+      }
+      # geometry
+      else if (gnames[[i]] %in% c("latitude", "longitude", "elevation", "geometryType")){
+        if (gnames[[i]] == "latitude"){ tmp$geometry$coordinates[[1]] <- geo$longitude }
+        else if (gnames[[i]] == "longitude"){ tmp$geometry$coordinates[[2]] <- geo$latitude }
+        else if (gnames[[i]] == "elevation"){ tmp$geometry$coordinates[[3]] <- geo$elevation }
+        else if (gnames[[i]] == "geometryType"){ tmp$geometry$type <- geo$geometryType}
+      }
+
+      # properties
+      else{
+        tmp[[gnames[[i]]]] <- geo[[gnames[[i]]]]
+      }
+    } # end loop
+    d$geo <- tmp
+  } # end if
+
+  return(d)
+}
+
+swap.geo.coordinates <- function(d){
+  tryCatch({
+    tmp <- d$geo$longitude
+    d$geo$longitude <- d$geo$latitude
+    d$geo$latitude <- tmp
+  },error=function(cond){
+    print("unable to swap coordinates")
+  })
+  return(d)
+}
+
