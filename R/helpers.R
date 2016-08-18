@@ -85,6 +85,7 @@ create.tmp.dir <- function(){
 }
 
 #' Return to preset "home" working directory
+#' @export
 #' @return none
 return.to.root <- function(){
   if(!exists("working.dir",where = .GlobalEnv)){
@@ -119,14 +120,20 @@ has.data <- function(path, i){
 #' @return csv All csv data
 clean.csv <- function(csv){
   blanks <- c("", " ", "NA")
-  for (file in 1:length(csv)){
-    for (cols in 1:length(csv[[file]])){
-      # get one column (matrix)
-      col <- csv[[file]][[cols]]
-      # replace all blanks in it
-      col[col %in% blanks] <- "NaN"
-      # set column back in columns
-      csv[[file]][[cols]] <- col
+  file.len <- length(csv)
+  if (file.len>0){
+    for (file in 1:file.len){
+      col.len <- length(csv[[file]])
+      if (col.len>0){
+        for (cols in 1:col.len){
+          # get one column (matrix)
+          col <- csv[[file]][[cols]]
+          # replace all blanks in it
+          col[col %in% blanks] <- "NaN"
+          # set column back in columns
+          csv[[file]][[cols]] <- col
+        }
+      }
     }
   }
   return(csv)
