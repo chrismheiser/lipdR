@@ -80,13 +80,13 @@ get.list.jsonld <- function(){
 #' @param f Target file
 #' @return t Data frame of csv data
 import.file.csv <- function(f){
-  t <- read.csv(f, header=FALSE)
+  t <- read.csv(f, header=FALSE, blank.lines.skip = FALSE,na.strings = c("nan", "NaN", "NAN", "NA"))
   # convert data frame to list
-  t <- as.list(t)
-  # convert columns from ANY type to numeric
-  for (i in 1:length(t)){
-    t[[i]] <- as.data.frame(t[[i]])
-  }
+  # t <- as.list(t)
+  # # convert columns from ANY type to numeric
+  # for (i in 1:length(t)){
+  #   t[[i]] <- as.data.frame(t[[i]])
+  # }
   return(t)
 }
 

@@ -57,7 +57,6 @@ remove.empty.rec <- function( x ){
   if (!is.matrix(x)){
     # Remove all the nulls
     x <- x[ !is.NullOb( x )]
-    x <- x[ !is.na( x ) ]
     x <- x[ !sapply( x, is.null ) ]
     # Recursion
     if( is.list(x) ){
@@ -119,7 +118,7 @@ has.data <- function(path, i){
 #' @param csv All csv data
 #' @return csv All csv data
 clean.csv <- function(csv){
-  blanks <- c("", " ", "NA")
+  blanks <- c("", " ", "NA", "NaN", "NAN", "nan")
   file.len <- length(csv)
   if (file.len>0){
     for (file in 1:file.len){
@@ -129,7 +128,7 @@ clean.csv <- function(csv){
           # get one column (matrix)
           col <- csv[[file]][[cols]]
           # replace all blanks in it
-          col[col %in% blanks] <- NaN
+          col[is.na(col) | is.nan(col)] <- NA
           # set column back in columns
           csv[[file]][[cols]] <- col
         }

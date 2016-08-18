@@ -60,7 +60,7 @@ get.data <- function(){
   # combine data for return.
   data.list[["metadata"]] <- j.data
   data.list[["csv"]] <- c.data
-  data.list[["csv"]] <- clean.csv(data.list[["csv"]])
+  # data.list[["csv"]] <- clean.csv(data.list[["csv"]])
 
   return(data.list)
 }
