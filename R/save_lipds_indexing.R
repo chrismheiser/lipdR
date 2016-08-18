@@ -152,24 +152,24 @@ unindex.geo <- function(d){
   geo <- d$geo
 
   if (!is.null(geo)){
-    names <- names(geo)
-    for (i in 1:length(names)){
+    gnames <- names(geo)
+    for (i in 1:length(gnames)){
 
       # type goes in root
-      if (names[[i]] == "type"){
+      if (gnames[[i]] == "type"){
         tmp$type <- geo$type
       }
       # geometry
-      else if (names[[i]] %in% c("latitude", "longitude", "elevation", "geometryType")){
-        if (names[[i]] == "latitude"){ tmp$geometry$coordinates[[1]] <- geo$longitude }
-        else if (names[[i]] == "longitude"){ tmp$geometry$coordinates[[2]] <- geo$latitude }
-        else if (names[[i]] == "elevation"){ tmp$geometry$coordinates[[3]] <- geo$elevation }
-        else if (names[[i]] == "geometryType"){ tmp$geometry$type <- geo$geometryType}
+      else if (gnames[[i]] %in% c("latitude", "longitude", "elevation", "geometryType")){
+        if (gnames[[i]] == "latitude"){ tmp$geometry$coordinates[[1]] <- geo$longitude }
+        else if (gnames[[i]] == "longitude"){ tmp$geometry$coordinates[[2]] <- geo$latitude }
+        else if (gnames[[i]] == "elevation"){ tmp$geometry$coordinates[[3]] <- geo$elevation }
+        else if (gnames[[i]] == "geometryType"){ tmp$geometry$type <- geo$geometryType}
       }
 
       # properties
       else{
-        tmp[[names[[i]]]] <- geo[[names[[i]]]]
+        tmp[[gnames[[i]]]] <- geo[[gnames[[i]]]]
       }
     } # end loop
     d$geo <- tmp

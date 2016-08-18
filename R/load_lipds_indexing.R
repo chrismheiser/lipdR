@@ -124,9 +124,9 @@ index.geo <- function(d){
   if (!is.null(geo)){
     # properties
     if (!is.null(geo$properties)){
-      names <- names(geo$properties)
-      for (i in 1:length(names)){
-        tmp[[names[[i]]]] <- geo$properties[[i]]
+      gnames <- gnames(geo$properties)
+      for (i in 1:length(gnames)){
+        tmp[[gnames[[i]]]] <- geo$properties[[i]]
       }
     } # end properties
 
