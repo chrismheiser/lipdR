@@ -129,7 +129,7 @@ clean.csv <- function(csv){
           # get one column (matrix)
           col <- csv[[file]][[cols]]
           # replace all blanks in it
-          col[col %in% blanks] <- "NaN"
+          col[col %in% blanks] <- NaN
           # set column back in columns
           csv[[file]][[cols]] <- col
         }
