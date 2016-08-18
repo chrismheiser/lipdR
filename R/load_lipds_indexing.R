@@ -132,29 +132,29 @@ index.geo <- function(d){
 
     # geometry
     if (!is.null(geo$geometry)){
-      names <- names(geo$geometry)
-      for (i in 1:length(names)){
-        if (names[[i]] == "coordinates"){
+      gnames <- names(geo$geometry)
+      for (i in 1:length(gnames)){
+        if (gnames[[i]] == "coordinates"){
           tmp$longitude <- geo$geometry$coordinates[[1]]
           tmp$latitude <- geo$geometry$coordinates[[2]]
           if (length(geo$geometry$coordinates) == 3){
             tmp$elevation <- geo$geometry$coordinates[[3]]
           }
         }
-        else if (names[[i]] == "type"){
+        else if (gnames[[i]] == "type"){
           tmp$geometryType <- geo$geometry[[i]]
         }
         else{
-          tmp[[names[[i]]]] <- geo$geometry[[i]]
+          tmp[[gnames[[i]]]] <- geo$geometry[[i]]
         }
       }
     } # end geometry
 
     # root geo
-    names(geo)
-    for (i in 1:length(names))
-      if (names[[i]] != "geometry" & names[[i]] != "properties"){
-        tmp[[names[[i]]]] <- geo[[names[[i]]]]
+    gnames <- names(geo)
+    for (i in 1:length(gnames))
+      if (gnames[[i]] != "geometry" & gnames[[i]] != "properties"){
+        tmp[[gnames[[i]]]] <- geo[[gnames[[i]]]]
       }
 
     # set the new data in d
