@@ -19,20 +19,25 @@ load.lipd.files <- function(tmp, files_noext){
 
   for(i in 1:file.count){
     current <- files_noext[[i]]
-    setwd(current)
     print(sprintf("loading: %s", current))
+    tryCatch({
+      setwd(current)
 
-    # real bagit. move into data folder
-    if (dir.exists("data")){ setwd("data") }
+      # real bagit. move into data folder
+      if (dir.exists("data")){ setwd("data") }
 
-    # fake bagit. no data folder. all files in root dir.
-    data.list <- get.data()
+      # fake bagit. no data folder. all files in root dir.
+      data.list <- get.data()
 
-    # compiled list of all data
-    out.list[[files_noext[[i]]]] <- data.list
+      # compiled list of all data
+      out.list[[files_noext[[i]]]] <- data.list
 
-    # Move back up to the tmp directory
-    setwd(tmp)
+      # Move back up to the tmp directory
+      setwd(tmp)
+    },error=function(cond){
+      print("Couldn't find the unarchived LiPD data. Make sure your LiPD filename matches the data set name. ")
+    })
+
   }
   return(out.list)
 }
