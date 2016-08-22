@@ -12,4 +12,5 @@ none
 \description{
 Import each of the required modules for the package
 }
+\keyword{internal}
 

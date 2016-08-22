@@ -15,4 +15,5 @@ name Data set name
 \description{
 Get data set name from metadata
 }
+\keyword{internal}
 

@@ -15,4 +15,5 @@ table Converted data table
 \description{
 Convert column type: data frame to list
 }
+\keyword{internal}
 

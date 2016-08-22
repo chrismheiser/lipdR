@@ -24,6 +24,7 @@ save.lipds <- function(D){
 
 #' Parse one data record
 #' @export
+#' @keywords internal
 #' @param d LiPD data
 #' @param name Data set name
 #' @return none
@@ -45,6 +46,7 @@ single.parse <- function(d, name=NA){
 
 #' Parse library of data records
 #' @export
+#' @keywords internal
 #' @param D LiPD data
 #' @return none
 multi.parse <- function(D){
@@ -66,6 +68,7 @@ multi.parse <- function(D){
 
 #' Get data set name from metadata
 #' @export
+#' @keywords internal
 #' @param d LiPD data
 #' @return name Data set name
 get.datasetname <- function(d){
@@ -84,6 +87,7 @@ get.datasetname <- function(d){
 
 #' Prompt the user for some string entry
 #' @export
+#' @keywords internal
 #' @param statement Statement that gets printed to the user
 #' @return ans User input entry
 prompt.string <- function(statement){

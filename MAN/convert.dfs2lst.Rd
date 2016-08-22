@@ -15,4 +15,5 @@ d Modified LiPD metadata
 \description{
 Check / convert and fixed data frames into scalable lists
 }
+\keyword{internal}
 

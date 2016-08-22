@@ -1,5 +1,6 @@
 #' Zip a directory, and move up a level
 #' @export
+#' @keywords internal
 #' @param dir Directory to be zipped
 #' @param tmp Directory that holds resulting zip file
 #' @return none
@@ -15,6 +16,7 @@ zipper <- function(dir, tmp){
 #' all we can do is use the default bag function by calling the
 #' full python file on a directory. This will create a bag.
 #' @export
+#' @keywords internal
 #' @param path The path to the directory that needs to be bagged
 #' @return none
 bagit <- function(data.dir, initial.dir){

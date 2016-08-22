@@ -6,6 +6,7 @@
 
 #' Import the data from each csv and jsonld file for given LiPDs
 #' @export
+#' @keywords internal
 #' @param tmp Char path to the temp folder in memory
 #' @param files_noext List of lipd files without extention
 #' @return out.list List of data for each lipd file
@@ -44,6 +45,7 @@ load.lipd.files <- function(tmp, files_noext){
 
 #' Retrieve and import csv and jsonld files in the current directory.
 #' @export
+#' @keywords internal
 #' @return data.list List of data for one LiPD file
 get.data <- function(){
   data.list <- list()

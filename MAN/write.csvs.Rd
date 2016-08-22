@@ -17,4 +17,5 @@ success Boolean for successful csv write
 Write out each CSV file for this LiPD record
 csv.data format: [ some_filename.csv $columns.data ]
 }
+\keyword{internal}
 

@@ -17,4 +17,5 @@ x String
 Check if output filename has invalid filename characters. Replace if necessary
 R will not zip directories with certain characters.
 }
+\keyword{internal}
 

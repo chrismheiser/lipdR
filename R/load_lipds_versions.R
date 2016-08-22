@@ -6,6 +6,7 @@
 
 #' Convert LiPD version structure whenever necessary
 #' @export
+#' @keywords internal
 #' @param D LiPD Library
 #' @return D modified LiPD Library
 convert.version <- function(D){
@@ -26,6 +27,7 @@ convert.version <- function(D){
 
 #' Get the version number from metadata
 #' @export
+#' @keywords internal
 #' @param d LiPD Metadata
 #' @return version LiPD version number
 get.version <- function(d){
@@ -41,6 +43,7 @@ get.version <- function(d){
 
 #' Check / convert and fixed data frames into scalable lists
 #' @export
+#' @keywords internal
 #' @param d LiPD metadata
 #' @return d Modified LiPD metadata
 convert.dfs2lst <- function(d){
@@ -58,6 +61,7 @@ convert.dfs2lst <- function(d){
 #' Convert from a single fixed table, to a multiple scalable table
 #' (LiPD Verison 1.1 to 1.2 change)
 #' @export
+#' @keywords internal
 #' @param d LiPD metadata
 #' @return d Modified LiPD metadata
 convert.s2m <- function(d, keys){

@@ -15,4 +15,5 @@ l List of jsonld data
 \description{
 Read in data from a jsonld file
 }
+\keyword{internal}
 

@@ -12,4 +12,5 @@ d Temporary directory path
 \description{
 Create a temporary working directory
 }
+\keyword{internal}
 

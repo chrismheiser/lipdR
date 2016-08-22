@@ -17,4 +17,5 @@ D Modified lipd library
 \description{
 Remove CSV and metadata layer from our lipd library. Also, remove empties
 }
+\keyword{internal}
 

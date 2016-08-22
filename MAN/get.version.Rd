@@ -15,4 +15,5 @@ version LiPD version number
 \description{
 Get the version number from metadata
 }
+\keyword{internal}
 

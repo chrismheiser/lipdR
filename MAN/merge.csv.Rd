@@ -17,4 +17,5 @@ meta.cols Modified metadata columns
 \description{
 Merge CSV data into the metadata
 }
+\keyword{internal}
 

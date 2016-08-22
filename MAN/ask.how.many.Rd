@@ -12,4 +12,5 @@ ans Answer to prompt (s/m)
 \description{
 Ask if user wants to load one file or a directory with multiple files.
 }
+\keyword{internal}
 

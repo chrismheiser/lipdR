@@ -1,5 +1,6 @@
 #' Collect csvs main. Collect and remove csv "values" fields.
 #' @export
+#' @keywords internal
 #' @param name Name of current LiPD record
 #' @param d Metadata
 #' @return all.data Final split of metadata and csv data
@@ -24,6 +25,7 @@ collect.csvs <- function(name, d){
 #' Collect and remove csv from one section: Paleo or chron
 #' csv.data format: [ some_filename.csv $columns.data ]
 #' @export
+#' @keywords internal
 #' @param d Metadata w. values
 #' @param keys Section keys
 #' @param csv.data Running collection of csv data
@@ -157,6 +159,7 @@ collect.csvs.section <- function(d, keys, csv.data, name){
 
 #' Parse the csv value columns from the table, then split the metadata from the csv
 #' @export
+#' @keywords internal
 #' @param table Table of data
 #' @return table Table w/o csv, csv Value columns
 parse.table <- function(table){
@@ -209,6 +212,7 @@ parse.table <- function(table){
 #' Write out each CSV file for this LiPD record
 #' csv.data format: [ some_filename.csv $columns.data ]
 #' @export
+#' @keywords internal
 #' @param csv.data List of Lists of csv column data
 #' @return success Boolean for successful csv write
 write.csvs <- function(csv.data){

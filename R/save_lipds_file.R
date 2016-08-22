@@ -1,5 +1,6 @@
 #' Main function. Run all save sub-routines for one LiPD record
 #' @export
+#' @keywords internal
 #' @param d Metadata
 #' @param name Name of current LiPD record
 #' @return none

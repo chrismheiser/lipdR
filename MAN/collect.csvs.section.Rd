@@ -23,4 +23,5 @@ all.data List holding the running collection of separated csv and metadata
 Collect and remove csv from one section: Paleo or chron
 csv.data format: [ some_filename.csv $columns.data ]
 }
+\keyword{internal}
 

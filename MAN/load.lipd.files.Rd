@@ -17,4 +17,5 @@ out.list List of data for each lipd file
 \description{
 Import the data from each csv and jsonld file for given LiPDs
 }
+\keyword{internal}
 

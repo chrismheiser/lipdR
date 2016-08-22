@@ -1,5 +1,6 @@
 #' Create the range for ensemble table "number" field
 #' @export
+#' @keywords internal
 #' @param start Number to start at
 #' @param len Amount of times to loop
 #' @return l A vectory of column ints
@@ -15,6 +16,7 @@ create.range <- function(start, len){
 
 #' Ask user where local file/folder location is.
 #' @export
+#' @keywords internal
 #' @return path.and.file Path to files
 get.local.path <- function(){
   ans <- ask.how.many()
@@ -24,6 +26,7 @@ get.local.path <- function(){
 
 #' Open a file browsing gui to let the user pick a location
 #' @export
+#' @keywords internal
 #' @param ans Single or multiple files
 #' @return path Path to file
 gui.for.path <- function(ans){
@@ -50,6 +53,7 @@ gui.for.path <- function(ans){
 
 #' Remove all NA, NULL, and empty objects from the data structure
 #' @export
+#' @keywords internal
 #' @param x Data structure
 #' @return x Modified data structure
 remove.empty.rec <- function( x ){
@@ -70,6 +74,7 @@ remove.empty.rec <- function( x ){
 
 #' Checks if an object is null/empty
 #' @export
+#' @keywords internal
 #' @param x Data object to check
 #' @return boolean
 is.NullOb <- function(x) is.null(x) | all(sapply(x, is.null))
@@ -77,6 +82,7 @@ is.NullOb <- function(x) is.null(x) | all(sapply(x, is.null))
 
 #' Create a temporary working directory
 #' @export
+#' @keywords internal
 #' @return d Temporary directory path
 create.tmp.dir <- function(){
   d <- tempdir()
@@ -98,6 +104,7 @@ return.to.root <- function(){
 
 #' Check if metadata path exists. Combine path and i to check for existence
 #' @export
+#' @keywords internal
 #' @param path Path in metadata
 #' @param i Next path level.
 #' @return dat Data found or null
@@ -115,6 +122,7 @@ has.data <- function(path, i){
 
 #' Replace all blank values in csv matrices
 #' @export
+#' @keywords internal
 #' @param csv All csv data
 #' @return csv All csv data
 clean.csv <- function(csv){
@@ -141,6 +149,7 @@ clean.csv <- function(csv){
 #' Check if output filename has invalid filename characters. Replace if necessary
 #' R will not zip directories with certain characters.
 #' @export
+#' @keywords internal
 #' @param x String
 #' @return x String
 verify.name <- function(x){
@@ -150,6 +159,7 @@ verify.name <- function(x){
 
 #' Make geo semi-flat. Remove unnecessary levels between us and data.
 #' @export
+#' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
 index.geo <- function(d){
@@ -201,6 +211,7 @@ index.geo <- function(d){
 
 #' Convert geo from semi-flat structure back to original GeoJSON structure.
 #' @export
+#' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
 unindex.geo <- function(d){
@@ -238,6 +249,11 @@ unindex.geo <- function(d){
   return(d)
 }
 
+#' An old bug caused some geo coordinates to be reversed. This will switch them back to normal.
+#' @export
+#' @keywords internal
+#' @param d Metadata
+#' @return d Modified metadata
 swap.geo.coordinates <- function(d){
   tryCatch({
     tmp <- d$geo$longitude

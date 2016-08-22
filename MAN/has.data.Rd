@@ -17,4 +17,5 @@ dat Data found or null
 \description{
 Check if metadata path exists. Combine path and i to check for existence
 }
+\keyword{internal}
 

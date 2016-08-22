@@ -15,4 +15,5 @@ ans User input entry
 \description{
 Prompt the user for some string entry
 }
+\keyword{internal}
 

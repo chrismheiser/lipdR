@@ -7,6 +7,7 @@
 
 #' Change index-by-number to index-by-variableName
 #' @export
+#' @keywords internal
 #' @param D The lipd library
 #' @param lpds list of all LiPD files (no extension)
 #' @return D modified lipd library
@@ -26,6 +27,7 @@ index.by.name <- function(D, lpds){
 
 #' Change index-by-number for one section
 #' @export
+#' @keywords internal
 #' @param d LiPD metadata
 #' @param keys Section keys
 #' @return d Modified LiPD metadata
@@ -84,6 +86,7 @@ index.section <- function(d, keys){
 
 #' Get rid of "columns" layer so that the columns data is directly beneath its corresponding table
 #' @export
+#' @keywords internal
 #' @param table Table to be reorganized
 #' @return table Modified table
 move.cols.up <- function(table){

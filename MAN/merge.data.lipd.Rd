@@ -17,4 +17,5 @@ d Modified LiPD metadata
 \description{
 Merge csv numeric data into the metadata columns
 }
+\keyword{internal}
 

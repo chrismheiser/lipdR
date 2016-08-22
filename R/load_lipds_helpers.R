@@ -6,6 +6,7 @@
 
 #' Import each of the required modules for the package
 #' @export
+#' @keywords internal
 #' @return none
 set.modules <- function(){
   suppressPackageStartupMessages(library(tools, quietly=TRUE, verbose=FALSE))
@@ -17,6 +18,7 @@ set.modules <- function(){
 
 #' Get list of all LiPD files in current directory
 #' @export
+#' @keywords internal
 #' @param path.and.file Target directory and 1+ files
 #' @return f List of LiPD files w. ext
 get.list.lpd.ext <- function(path.and.file){
@@ -36,6 +38,7 @@ get.list.lpd.ext <- function(path.and.file){
 
 #' Unzip all LiPD files to the temporary directory
 #' @export
+#' @keywords internal
 #' @param files LiPD files to unzip
 #' @param tmp Temporary directory
 #' @return none
@@ -61,6 +64,7 @@ strip.extension <- function(files_ext){
 
 #' Get list of csv files in current directory and below
 #' @export
+#' @keywords internal
 #' @return f List of csv files
 get.list.csv <- function(){
   f <- list.files(path=getwd(), pattern='\\.csv$', recursive=TRUE)
@@ -69,6 +73,7 @@ get.list.csv <- function(){
 
 #' Get list of jsonly files in current directory and below
 #' @export
+#' @keywords internal
 #' @return f List of jsonld files
 get.list.jsonld <- function(){
   f <- list.files(path=getwd(), pattern='\\.jsonld$', recursive=TRUE)
@@ -77,6 +82,7 @@ get.list.jsonld <- function(){
 
 #' Read in data from a csv file
 #' @export
+#' @keywords internal
 #' @param f Target file
 #' @return t Data frame of csv data
 import.file.csv <- function(f){
@@ -92,6 +98,7 @@ import.file.csv <- function(f){
 
 #' Read in data from a jsonld file
 #' @export
+#' @keywords internal
 #' @param f Target file
 #' @return l List of jsonld data
 import.file.jsonld <- function(f){
@@ -101,6 +108,7 @@ import.file.jsonld <- function(f){
 
 #' Remove CSV and metadata layer from our lipd library. Also, remove empties
 #' @export
+#' @keywords internal
 #' @param D LiPD Library
 #' @param lpds List of LiPD files in the library
 #' @return D Modified lipd library
@@ -115,6 +123,7 @@ remove.layers <- function(D, lpds){
 
 #' Ask if user wants to load one file or a directory with multiple files.
 #' @export
+#' @keywords internal
 #' @return ans Answer to prompt (s/m)
 ask.how.many <- function(){
   ans <- readline(prompt="Are you loading one file or multiple? (s/m): ")
@@ -128,6 +137,7 @@ ask.how.many <- function(){
 
 #' Convert column type: data frame to list
 #' @export
+#' @keywords internal
 #' @param table Data table
 #' @return table Converted data table
 cols.to.lists <- function(table){
@@ -149,6 +159,7 @@ cols.to.lists <- function(table){
 
 #' Convert table type: data frame to list
 #' @export
+#' @keywords internal
 #' @param table Data table
 #' @return table Converted data table
 table.to.list <- function(table){

@@ -5,6 +5,7 @@
 
 #' Merge Main. Call the individual steps of merge for each file.
 #' @export
+#' @keywords internal
 #' @param D LiPD Library
 #' @param lpds LiPD names
 #' @return D Merged LiPD Library
@@ -24,6 +25,7 @@ merge.main <- function(D, lpds){
 
 #' Merge csv numeric data into the metadata columns
 #' @export
+#' @keywords internal
 #' @param d LiPD metadata
 #' @param keys Paleo or Chron keys
 #' @return d Modified LiPD metadata
@@ -158,6 +160,7 @@ merge.data.lipd <- function(d, keys){
 
 #' Merge CSV data into the metadata
 #' @export
+#' @keywords internal
 #' @param csv.cols CSV data for this file
 #' @param meta.cols Target metadata columns
 #' @return meta.cols Modified metadata columns

@@ -17,4 +17,5 @@ table Modified table data
 Remove column names indexing. Set them to index by their column number
 Place the new columns under a "columns" list
 }
+\keyword{internal}
 

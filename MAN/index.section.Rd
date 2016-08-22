@@ -17,4 +17,5 @@ d Modified LiPD metadata
 \description{
 Change index-by-number for one section
 }
+\keyword{internal}
 

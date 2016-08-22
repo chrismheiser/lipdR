@@ -17,4 +17,5 @@ d Modified LiPD metadata
 Convert from a single fixed table, to a multiple scalable table
 (LiPD Verison 1.1 to 1.2 change)
 }
+\keyword{internal}
 

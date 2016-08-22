@@ -15,4 +15,5 @@ f List of LiPD files w. ext
 \description{
 Get list of all LiPD files in current directory
 }
+\keyword{internal}
 

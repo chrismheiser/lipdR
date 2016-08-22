@@ -15,4 +15,5 @@ path Path to file
 \description{
 Open a file browsing gui to let the user pick a location
 }
+\keyword{internal}
 

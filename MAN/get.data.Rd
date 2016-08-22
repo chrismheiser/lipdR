@@ -12,4 +12,5 @@ data.list List of data for one LiPD file
 \description{
 Retrieve and import csv and jsonld files in the current directory.
 }
+\keyword{internal}
 

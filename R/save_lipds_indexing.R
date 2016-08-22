@@ -1,5 +1,6 @@
 #' Main indexing. Convert all index-by-name to index-by-number.
 #' @export
+#' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
 index.by.number <- function(d){
@@ -17,6 +18,7 @@ index.by.number <- function(d){
 
 #' Index a single section. Paleo or Chron
 #' @export
+#' @keywords internal
 #' @param d LiPD Metadata
 #' @param keys Section keys
 #' @return d Modified metadata
@@ -84,6 +86,7 @@ idx.section <- function(d, keys){
 #' Remove column names indexing. Set them to index by their column number
 #' Place the new columns under a "columns" list
 #' @export
+#' @keywords internal
 #' @param table Table data
 #' @return table Modified table data
 move.cols.down <- function(table){

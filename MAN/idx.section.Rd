@@ -17,4 +17,5 @@ d Modified metadata
 \description{
 Index a single section. Paleo or Chron
 }
+\keyword{internal}
 
