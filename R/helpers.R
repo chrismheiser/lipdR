@@ -14,6 +14,23 @@ createRange <- function(start, len){
 }
 
 
+#' Check for a LiPD version in the metadata. Create one if it isn't found.
+#' @export
+#' @keywords internal
+#' @param j Json metadata
+#' @return j Json metadata
+confirmLipdVersion <- function(j){
+  # Lowercase the keys so we can match keys case-insensitively
+  keys = sapply(names(j), tolower)
+  # Check for the lipdversion key in the metadata
+  if(!"lipdversion" %in% keys && !"lipd_version" %in% keys){
+    # Key not found, insert it and default to v1.2
+    j[["LiPDVersion"]] = 1.2
+  }
+  return(j)
+}
+
+
 #' Ask user where local file/folder location is.
 #' @export
 #' @keywords internal

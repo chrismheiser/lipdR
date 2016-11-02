@@ -50,6 +50,8 @@ saveLipdFile <- function(d, name){
     # remove all empty objs and null values
     j <- removeEmptyRec(all.data[["metadata"]])
 
+    j <- confirmLipdVersion(j)
+
     # turn data structure into json
     j <- jsonlite::toJSON(j, pretty=TRUE, auto_unbox = TRUE)
 

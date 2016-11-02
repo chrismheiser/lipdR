@@ -1,4 +1,4 @@
-###############################################
+w###############################################
 ## Load LiPDs - Indexing
 ## Misc functions that aid in converting LiPD
 ## data into a preferred R analysis structure
