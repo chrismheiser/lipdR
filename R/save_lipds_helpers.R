@@ -8,7 +8,7 @@ zipper <- function(dir, tmp){
   # zip the top lipd directory. zip file is create one level up
   setwd(dir)
   include.files <- list.files(getwd(), recursive = TRUE)
-  suppressAll(zip(dir, include.files))
+  BBmisc::suppressAll(zip(dir, include.files))
   setwd(tmp)
 }
 

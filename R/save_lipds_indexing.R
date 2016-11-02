@@ -3,15 +3,15 @@
 #' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
-index.by.number <- function(d){
+indexByNumber <- function(d){
 
   paleos <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chrons <- c("chronData", "chronMeasurementTable", "chronModel")
 
   # convert single entries to lists. matching structure to 1.2
-  d <- idx.section(d, paleos)
-  d <- idx.section(d, chrons)
-  d <- unindex.geo(d)
+  d <- indexSection(d, paleos)
+  d <- indexSection(d, chrons)
+  d <- unindexGeo(d)
 
   return(d)
 }
@@ -22,7 +22,7 @@ index.by.number <- function(d){
 #' @param d LiPD Metadata
 #' @param keys Section keys
 #' @return d Modified metadata
-idx.section <- function(d, keys){
+indexSection <- function(d, keys){
   key1 <- keys[[1]]
   key2 <- keys[[2]]
   key3 <- keys[[3]]
@@ -39,7 +39,7 @@ idx.section <- function(d, keys){
       table <- d[[key1]][[i]][[key2]][[j]]
 
       if(!is.null(table)){
-        new <- move.cols.down(table)
+        new <- moveColsDown(table)
         d[[key1]][[i]][[key2]][[j]] <- new
       }
 
@@ -53,14 +53,14 @@ idx.section <- function(d, keys){
       # d$paleoData[[i]]paleoModel[[j]]$summaryTable - should only be one
       table <- d[[key1]][[i]][[key3]][[j]][["summaryTable"]]
       if (!is.null(table)){
-        new <- move.cols.down(table)
+        new <- moveColsDown(table)
         d[[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new
       }
 
       # d$paleoData[[i]]paleoModel[[j]]$ensembleTable - should only be one
       table <- d[[key1]][[i]][[key3]][[j]][["ensembleTable"]]
       if (!is.null(table)){
-        new <- move.cols.down(table)
+        new <- moveColsDown(table)
         d[[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new
       }
       # d$paleoData[[i]]paleoModel[[j]]$distributionTable - can be one or many
@@ -69,7 +69,7 @@ idx.section <- function(d, keys){
         # d$paleoData[[i]]paleoModel[[j]]$distributionTable[[k]]
         table <- d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]]
         if (!is.null(table)){
-          new <- move.cols.down(table)
+          new <- moveColsDown(table)
           # only add if the table exists
           d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new
         }
@@ -89,7 +89,7 @@ idx.section <- function(d, keys){
 #' @keywords internal
 #' @param table Table data
 #' @return table Modified table data
-move.cols.down <- function(table){
+moveColsDown <- function(table){
 
   tmp <- list()
   new.cols <- list()

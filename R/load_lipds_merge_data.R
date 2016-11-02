@@ -9,15 +9,15 @@
 #' @param D LiPD Library
 #' @param lpds LiPD names
 #' @return D Merged LiPD Library
-merge.main <- function(D, lpds){
+addCsvToMetadata <- function(D, lpds){
 
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chron <- c("chronData", "chronMeasurementTable", "chronModel")
 
   for (lipd in 1:length(lpds)){
     name <- lpds[[lipd]]
-    D[[name]] <- merge.data.lipd(D[[name]], paleo)
-    D[[name]] <- merge.data.lipd(D[[name]], chron)
+    D[[name]] <- mergeDataLipd(D[[name]], paleo)
+    D[[name]] <- mergeDataLipd(D[[name]], chron)
   }
 
   return(D)
@@ -29,7 +29,7 @@ merge.main <- function(D, lpds){
 #' @param d LiPD metadata
 #' @param keys Paleo or Chron keys
 #' @return d Modified LiPD metadata
-merge.data.lipd <- function(d, keys){
+mergeDataLipd <- function(d, keys){
 
     key1 <- keys[[1]]
     key2 <- keys[[2]]
@@ -57,7 +57,7 @@ merge.data.lipd <- function(d, keys){
         if (!is.null(filename)){
           csv.cols <- d[["csv"]][[filename]]
           meta.cols <- table[["columns"]]
-          d[["metadata"]][[key1]][[i]][[key2]][[j]][["columns"]] <- merge.csv(csv.cols, meta.cols)
+          d[["metadata"]][[key1]][[i]][[key2]][[j]][["columns"]] <- mergeCsv(csv.cols, meta.cols)
         }
       } # end measurement tables
 
@@ -65,7 +65,7 @@ merge.data.lipd <- function(d, keys){
       if(any(names(pc[[i]])==key3)){
 
         # loop in models
-        dat <- has.data(pc[[i]], key3)
+        dat <- hasData(pc[[i]], key3)
         if (!is.null(dat)){
           chronModel <- vector(mode="list",length=length(dat))
 
@@ -81,7 +81,7 @@ merge.data.lipd <- function(d, keys){
             if (!is.null(filename)){
               csv.cols <- d[["csv"]][[filename]]
               meta.cols <- table[["columns"]]
-              columns <- merge.csv(csv.cols, meta.cols)
+              columns <- mergeCsv(csv.cols, meta.cols)
               toCopy <- which(names(table)!="columns")
               for(tt in toCopy){
                 chronModel[[j]]$summaryTable[[names(table)[tt]]] <- table[[names(table)[tt]]]
@@ -92,7 +92,7 @@ merge.data.lipd <- function(d, keys){
 
             # ensemble table
             # d$chronData[[i]]$chronModel[[j]]$ensembleTable[[1]] - only one per model
-            dat <- has.data(pc[[i]][[key3]][[j]], "ensembleTable")
+            dat <- hasData(pc[[i]][[key3]][[j]], "ensembleTable")
             if (!is.null(dat)){
               table <- pc[[i]][[key3]][[j]][["ensembleTable"]]
               # get filename
@@ -100,7 +100,7 @@ merge.data.lipd <- function(d, keys){
               if (!is.null(filename)){
                 csv.cols <- d[["csv"]][[filename]]
                 meta.cols <- table[["columns"]]
-                columns <- merge.csv(csv.cols, meta.cols)
+                columns <- mergeCsv(csv.cols, meta.cols)
                 toCopy <- which(names(table)!="columns")
                 for(tt in toCopy){
                   chronModel[[j]]$ensembleTable[[names(table)[tt]]] <- table[[names(table)[tt]]]
@@ -110,7 +110,7 @@ merge.data.lipd <- function(d, keys){
             }
 
             # distribution tables
-            dat <- has.data(pc[[i]][[key3]][[j]][["distributionTable"]], 1)
+            dat <- hasData(pc[[i]][[key3]][[j]][["distributionTable"]], 1)
             if (!is.null(dat)){
               distributionTable <- vector(mode = "list",length = length(dat)[1])
               if(length(distributionTable)>=1){
@@ -125,7 +125,7 @@ merge.data.lipd <- function(d, keys){
                   if (!is.null(filename)){
                     csv.cols <- d[["csv"]][[filename]]
                     meta.cols <- table[["columns"]]
-                    columns  <- merge.csv(csv.cols, meta.cols)
+                    columns  <- mergeCsv(csv.cols, meta.cols)
                     toCopy <- which(names(table)!="columns")
                     for(tt in toCopy){
                       distributionTable[[k]][[names(table)[tt]]] <- table[[names(table)[tt]]]
@@ -164,7 +164,7 @@ merge.data.lipd <- function(d, keys){
 #' @param csv.cols CSV data for this file
 #' @param meta.cols Target metadata columns
 #' @return meta.cols Modified metadata columns
-merge.csv <- function(csv.cols, meta.cols){
+mergeCsv <- function(csv.cols, meta.cols){
 
   col.ct <- length(meta.cols)
   # go through the columns
@@ -177,7 +177,7 @@ merge.csv <- function(csv.cols, meta.cols){
       for (j in 1:length(nums)){
         tmp[[j]] <- csv.cols[[nums[[j]]]]
       }
-      # turn the columns into a matrix
+      # turn the columns into a matrix - transpose
       meta.cols[[i]][["values"]] <- t(do.call(rbind, tmp))
     }
     else {

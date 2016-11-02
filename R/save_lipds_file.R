@@ -4,15 +4,15 @@
 #' @param d Metadata
 #' @param name Name of current LiPD record
 #' @return none
-save.lipd.file <- function(d, name){
+saveLipdFile <- function(d, name){
 
   # verify name format
-  name <- verify.name(name)
+  name <- verifyOutputFilename(name)
 
   # Create the folder hierarchy for Bagit
   # Make the tmp folder and move into it
   initial.dir <- getwd()
-  tmp <- create.tmp.dir()
+  tmp <- createTmpDir()
   if (!dir.exists(tmp)){
     dir.create(tmp)
   }
@@ -34,24 +34,24 @@ save.lipd.file <- function(d, name){
   setwd(name)
 
   # reverse columns to index by number
-  d <- index.by.number(d)
+  d <- indexByNumber(d)
 
   # collect all csv data into an organized list
-  all.data <- collect.csvs(name, d)
+  all.data <- collectCsvs(name, d)
 
   # clean csv
-  all.data[["csv"]] <- clean.csv(all.data[["csv"]])
+  all.data[["csv"]] <- cleanCsv(all.data[["csv"]])
 
   # use the organized list to write out all csv files
-  csv.success <- write.csvs(all.data[["csv"]])
+  csv.success <- writeCsvs(all.data[["csv"]])
 
   # only continue if csv files were written
   if (csv.success){
     # remove all empty objs and null values
-    j <- remove.empty.rec(all.data[["metadata"]])
+    j <- removeEmptyRec(all.data[["metadata"]])
 
     # turn data structure into json
-    j <- toJSON(j, pretty=TRUE, auto_unbox = TRUE)
+    j <- jsonlite::toJSON(j, pretty=TRUE, auto_unbox = TRUE)
 
     # filename.lpd
     lpd.jsonld <- paste0(name, ".jsonld")

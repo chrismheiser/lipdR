@@ -4,7 +4,7 @@
 #' @param start Number to start at
 #' @param len Amount of times to loop
 #' @return l A vectory of column ints
-create.range <- function(start, len){
+createRange <- function(start, len){
   l <- c()
   for (i in 1:len){
     l[[i]] <- start
@@ -18,9 +18,9 @@ create.range <- function(start, len){
 #' @export
 #' @keywords internal
 #' @return path.and.file Path to files
-get.local.path <- function(){
-  ans <- ask.how.many()
-  path.and.file <- gui.for.path(ans)
+getSrcOrDst<- function(){
+  ans <- askHowMany()
+  path.and.file <- browseDialog(ans)
   return(path.and.file)
 }
 
@@ -29,7 +29,7 @@ get.local.path <- function(){
 #' @keywords internal
 #' @param ans Single or multiple files
 #' @return path Path to file
-gui.for.path <- function(ans){
+browseDialog <- function(ans){
   tryCatch(
     { path <- file.choose() },
     error=function(cond){
@@ -56,16 +56,16 @@ gui.for.path <- function(ans){
 #' @keywords internal
 #' @param x Data structure
 #' @return x Modified data structure
-remove.empty.rec <- function( x ){
+removeEmptyRec <- function( x ){
   # don't process matrices. it'll turn them to lists and that ruins ensemble data.
   if (!is.matrix(x)){
     # Remove all the nulls
-    x <- x[ !is.NullOb( x )]
+    x <- x[ !isNullOb( x )]
     x <- x[ !sapply( x, is.null ) ]
     # Recursion
     if( is.list(x) ){
       # Recursive dive
-      x <- lapply(x, remove.empty.rec)
+      x <- lapply(x, removeEmptyRec)
     }
     x <- x[ unlist(sapply(x, length) != 0)]
   }
@@ -77,14 +77,14 @@ remove.empty.rec <- function( x ){
 #' @keywords internal
 #' @param x Data object to check
 #' @return boolean
-is.NullOb <- function(x) is.null(x) | all(sapply(x, is.null))
+isNullOb <- function(x) is.null(x) | all(sapply(x, is.null))
 
 
 #' Create a temporary working directory
 #' @export
 #' @keywords internal
 #' @return d Temporary directory path
-create.tmp.dir <- function(){
+createTmpDir <- function(){
   d <- tempdir()
   return(d)
 }
@@ -92,10 +92,10 @@ create.tmp.dir <- function(){
 #' Return to preset "home" working directory
 #' @export
 #' @return none
-return.to.root <- function(){
+returnToRoot <- function(){
   if(!exists("working.dir",where = .GlobalEnv)){
     print("Working directory not set. Choose any file -inside- your target directory")
-    out <- gui.for.path(NULL)
+    out <- guiForPath(NULL)
     working.dir <- out[["dir"]]
     assign("working.dir", working.dir, envir = .GlobalEnv)
   }
@@ -108,13 +108,13 @@ return.to.root <- function(){
 #' @param path Path in metadata
 #' @param i Next path level.
 #' @return dat Data found or null
-has.data <- function(path, i){
+hasData <- function(path, i){
   dat <- tryCatch({
     dat <- path[[i]]
   }, error=function(cond){
     return(NULL)
   })
-  if (is.NullOb(dat)){
+  if (isNullOb(dat)){
     dat <- NULL
   }
   return(dat)
@@ -125,7 +125,7 @@ has.data <- function(path, i){
 #' @keywords internal
 #' @param csv All csv data
 #' @return csv All csv data
-clean.csv <- function(csv){
+cleanCsv <- function(csv){
   blanks <- c("", " ", "NA", "NaN", "NAN", "nan")
   file.len <- length(csv)
   if (file.len>0){
@@ -152,7 +152,7 @@ clean.csv <- function(csv){
 #' @keywords internal
 #' @param x String
 #' @return x String
-verify.name <- function(x){
+verifyOutputFilename <- function(x){
   x <- gsub("[.]", "-", x)
   return(x)
 }
@@ -162,7 +162,7 @@ verify.name <- function(x){
 #' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
-index.geo <- function(d){
+indexGeo <- function(d){
   # create a tmp list
   tmp <- list()
   geo <- d$metadata$geo
@@ -214,7 +214,7 @@ index.geo <- function(d){
 #' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
-unindex.geo <- function(d){
+unindexGeo <- function(d){
 
   tmp <- list()
   tmp$geometry <- list()
@@ -254,7 +254,7 @@ unindex.geo <- function(d){
 #' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
-swap.geo.coordinates <- function(d){
+swapGeoCoordinates <- function(d){
   tryCatch({
     tmp <- d$geo$longitude
     d$geo$longitude <- d$geo$latitude

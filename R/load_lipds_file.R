@@ -10,7 +10,7 @@
 #' @param tmp Char path to the temp folder in memory
 #' @param files_noext List of lipd files without extention
 #' @return out.list List of data for each lipd file
-load.lipd.files <- function(tmp, files_noext){
+loadLipdFiles <- function(tmp, files_noext){
 
   # Move into the tmp folder
   setwd(tmp)
@@ -28,7 +28,7 @@ load.lipd.files <- function(tmp, files_noext){
       if (dir.exists("data")){ setwd("data") }
 
       # fake bagit. no data folder. all files in root dir.
-      data.list <- get.data()
+      data.list <- getData()
 
       # compiled list of all data
       out.list[[files_noext[[i]]]] <- data.list
@@ -47,22 +47,22 @@ load.lipd.files <- function(tmp, files_noext){
 #' @export
 #' @keywords internal
 #' @return data.list List of data for one LiPD file
-get.data <- function(){
+getData <- function(){
   data.list <- list()
   # list of csv files
-  c <- get.list.csv()
+  c <- listFiles("csv")
   # csv data placeholder
   c.data=vector(mode="list",length=length(c))
   # import each csv file
   for (ci in 1:length(c)){
-    df=import.file.csv(c[ci])
+    df=read.csv(c[ci], header=FALSE, blank.lines.skip = FALSE,na.strings = c("nan", "NaN", "NAN", "NA"))
     c.data[[c[ci]]]=df
   }
 
   # jsonld file - one per lpd
-  j <- get.list.jsonld()
+  j <- listFiles("jsonld")
   # import jsonld file
-  j.data <- import.file.jsonld(j)
+  j.data <- fromJSON(j, simplifyDataFrame = FALSE)
 
   # combine data for return.
   data.list[["metadata"]] <- j.data

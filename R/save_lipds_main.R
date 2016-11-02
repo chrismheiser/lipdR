@@ -2,11 +2,10 @@
 #' @export
 #' @param D LiPD Library
 #' @return none
-save.lipds <- function(D){
-
+saveLipds <- function(D){
   ans <- readline(prompt="Save files to the current working directory? (y/n): ")
   if (ans=="n"){
-    change.dir <- gui.for.path(NULL)
+    change.dir <- browseDialog(NULL)
     setwd(change.dir[["dir"]])
   }
   # starting directory. this is where files will be saved to
@@ -14,9 +13,9 @@ save.lipds <- function(D){
 
   # Parse one or many records?
   if ("paleoData" %in% names(D)){
-      single.parse(D)
+      singleParse(D)
     } else {
-      multi.parse(D)
+      multiParse(D)
     }
   # return back to the initial directory
   setwd(initial.dir)
@@ -28,12 +27,12 @@ save.lipds <- function(D){
 #' @param d LiPD data
 #' @param name Data set name
 #' @return none
-single.parse <- function(d, name=NA){
+singleParse <- function(d, name=NA){
   # save one lipd
   if (is.na(name)){
-    name <- get.datasetname(d)
+    name <- getDatasetName(d)
   }
-  save.lipd.file(d, name)
+  saveLipdFile(d, name)
 
   # # Save lipd data
   # tryCatch({
@@ -49,7 +48,7 @@ single.parse <- function(d, name=NA){
 #' @keywords internal
 #' @param D LiPD data
 #' @return none
-multi.parse <- function(D){
+multiParse <- function(D){
   # loop by record names
   lpds <- names(D)
 
@@ -58,7 +57,7 @@ multi.parse <- function(D){
         # reference to single lipd record
         d <- D[[lpds[[i]]]]
         print(sprintf("saving: %s", lpds[[i]]))
-        single.parse(d, lpds[[i]])
+        singleParse(d, lpds[[i]])
     }, error=function(cond){
       print(sprintf("error saving: %s", lpds[[i]]))
     })
@@ -71,7 +70,7 @@ multi.parse <- function(D){
 #' @keywords internal
 #' @param d LiPD data
 #' @return name Data set name
-get.datasetname <- function(d){
+getDatasetName <- function(d){
   # Attempt to find data set name entry
   name <- tryCatch({
     name <- d$dataSetName
@@ -80,7 +79,7 @@ get.datasetname <- function(d){
   })
   # No dataSetName entry in record. Have user enter a name
   if (is.na(name)){
-    name <- prompt.string("No data set name found. Enter the name: ")
+    name <- promptString("No data set name found. Enter the name: ")
   }
   return(name)
 }
@@ -90,7 +89,7 @@ get.datasetname <- function(d){
 #' @keywords internal
 #' @param statement Statement that gets printed to the user
 #' @return ans User input entry
-prompt.string <- function(statement){
+promptString <- function(statement){
   invalid = TRUE
   # Loop until valid input
   while (invalid){

@@ -9,15 +9,15 @@
 #' @keywords internal
 #' @param D LiPD Library
 #' @return D modified LiPD Library
-convert.version <- function(D){
+convertVersion <- function(D){
   # Loop once for every LiPD object
   for (i in 1:length(D)){
     # Check which version this LiPD file is
     lipd <- D[[i]]
-    version <- get.version(lipd)
+    version <- getVersion(lipd)
 
     # check and convert any data frames into lists
-    lipd <- convert.dfs2lst(lipd)
+    lipd <- convertDfsLst(lipd)
 
     # Replace the LiPD data with the new converted structure
     D[[i]] <- lipd
@@ -30,7 +30,7 @@ convert.version <- function(D){
 #' @keywords internal
 #' @param d LiPD Metadata
 #' @return version LiPD version number
-get.version <- function(d){
+getVersion <- function(d){
   version <- as.numeric(d[["metadata"]][["LiPDVersion"]])
   if (length(version)==0){
     version <- 1.0
@@ -46,14 +46,14 @@ get.version <- function(d){
 #' @keywords internal
 #' @param d LiPD metadata
 #' @return d Modified LiPD metadata
-convert.dfs2lst <- function(d){
+convertDfsLst <- function(d){
 
   paleos <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chrons <- c("chronData", "chronMeasurementTable", "chronModel")
 
   # convert single entries to lists. matching structure to 1.2
-  d <- convert.s2m(d, paleos)
-  d <- convert.s2m(d, chrons)
+  d <- convertSM(d, paleos)
+  d <- convertSM(d, chrons)
 
   return(d)
 }
@@ -64,7 +64,7 @@ convert.dfs2lst <- function(d){
 #' @keywords internal
 #' @param d LiPD metadata
 #' @return d Modified LiPD metadata
-convert.s2m <- function(d, keys){
+convertSM <- function(d, keys){
 
   key1 <- keys[[1]]
   key2 <- keys[[2]]
@@ -72,7 +72,7 @@ convert.s2m <- function(d, keys){
 
   # PALEODATA
   # data frame?
-  dat <- has.data(d[["metadata"]], key1)
+  dat <- hasData(d[["metadata"]], key1)
 
   # proceed of section exists
   if (!is.null(dat)){
@@ -82,7 +82,7 @@ convert.s2m <- function(d, keys){
       d[["metadata"]][[key1]][[1]] <- as.list(dat)
     }
     # multiples?
-    dat <- has.data(d[["metadata"]][[key1]], 1)
+    dat <- hasData(d[["metadata"]][[key1]], 1)
     # convert to multiples
     if (is.null(dat)){
       d[["metadata"]][[key1]] <- list()
@@ -94,18 +94,18 @@ convert.s2m <- function(d, keys){
 
       # PALEODATA[[i]]
       # data frame?
-      dat <- has.data(d[["metadata"]][[key1]], i)
+      dat <- hasData(d[["metadata"]][[key1]], i)
       if (is.data.frame(!is.null(dat))){
           d[["metadata"]][[key1]][[i]] <- as.list(dat)
       }
       # MEAS + MODEL
       # table exists ?
       # d$paleoData[[i]]$paleoMeasurementTable
-      dat.meas <- has.data(d[["metadata"]][[key1]][[i]], key2)
+      dat.meas <- hasData(d[["metadata"]][[key1]][[i]], key2)
 
       # table exists ?
       # d$paleoData[[i]]$paleoModel
-      dat.model <- has.data(d[["metadata"]][[key1]][[i]], key3)
+      dat.model <- hasData(d[["metadata"]][[key1]][[i]], key3)
 
       # tables do not exist.
       # make a meas table
@@ -119,7 +119,7 @@ convert.s2m <- function(d, keys){
       # DIRECT
       # multiples ?
       # d$paleoData[[i]]$paleoMeasurementTable$columns
-      dat <- has.data(d[["metadata"]][[key1]][[i]][[key2]], "columns")
+      dat <- hasData(d[["metadata"]][[key1]][[i]][[key2]], "columns")
       # convert to multiples
       # d$paleoData[[i]]$paleoMeasurementTable
       if (!is.null(dat)){
@@ -131,13 +131,13 @@ convert.s2m <- function(d, keys){
       # MEASUREMENT
       # paleoData[[i]]paleoMeasurementTable
       # data frame ?
-      dat <- has.data(d[["metadata"]][[key1]][[i]], key2)
+      dat <- hasData(d[["metadata"]][[key1]][[i]], key2)
       if (is.data.frame(!is.null(dat))){
         d[["metadata"]][[key1]][[i]][[key2]] <- as.list(dat)
       }
       # multiples ?
       if (!is.null(dat)){
-        dat <- has.data(d[["metadata"]][[key1]][[1]][[key2]], 1)
+        dat <- hasData(d[["metadata"]][[key1]][[1]][[key2]], 1)
         # convert to multiples
         # d$paleoData[[i]]$paleoMeasurementTable[[j]]
         if (is.null(dat)){
@@ -152,7 +152,7 @@ convert.s2m <- function(d, keys){
           # MEASUREMENT[[j]]
           # paleoData[[i]]paleoMeasurementTable[[j]]
           # data frame?
-          dat <- has.data(d[["metadata"]][[key1]][[i]][[key2]], j)
+          dat <- hasData(d[["metadata"]][[key1]][[i]][[key2]], j)
           if (is.data.frame(!is.null(dat))){
             d[["metadata"]][[key1]][[i]][[key2]][[j]] <- as.list(dat)
           } # END MEASUREMENT[[j]]
@@ -165,14 +165,14 @@ convert.s2m <- function(d, keys){
         # MODEL
         # paleoData[[i]]paleoModel
         # data frame ?
-        dat <- has.data( d[["metadata"]][[key1]][[i]], key3)
+        dat <- hasData( d[["metadata"]][[key1]][[i]], key3)
         if (is.data.frame(!is.null(dat))){
           d[["metadata"]][[key1]][[i]][[key3]] <- as.list(dat)
         }
         # multiples ?
         # convert to multiples
         if (!is.null(dat)){
-          dat <- has.data(d[["metadata"]][[key1]][[1]][[key3]], 1)
+          dat <- hasData(d[["metadata"]][[key1]][[1]][[key3]], 1)
           if (is.null(dat)){
             tmp <- d[["metadata"]][[key1]][[1]][[key3]]
             d[["metadata"]][[key1]][[1]][[key3]] <- list()
@@ -185,7 +185,7 @@ convert.s2m <- function(d, keys){
             # MODEL[[j]]
             # paleoModel[[j]]
             # data frame ?
-            dat <- has.data(d[["metadata"]][[key1]][[i]][[key3]], j)
+            dat <- hasData(d[["metadata"]][[key1]][[i]][[key3]], j)
             if (is.data.frame(!is.null(dat))){
               d[["metadata"]][[key1]][[i]][[key3]][[j]] <- as.list(dat)
             }
@@ -193,7 +193,7 @@ convert.s2m <- function(d, keys){
             # SUMMARY
             # paleoModel[[j]]$summaryTable
             # data frame ?
-            dat <- has.data(d[["metadata"]][[key1]][[i]][[key3]][[j]], "summaryTable")
+            dat <- hasData(d[["metadata"]][[key1]][[i]][[key3]][[j]], "summaryTable")
             if (is.data.frame(!is.null(dat))){
               d[["metadata"]][[key1]][[i]][[key3]][[j]][["summaryTable"]] <- as.list(dat)
             }
@@ -201,14 +201,14 @@ convert.s2m <- function(d, keys){
             # ENSEMBLE
             # paleoModel[[j]]$ensembleTable
             # data frame ?
-            dat <- has.data(d[["metadata"]][[key1]][[i]][[key3]][[j]], "ensembleTable")
+            dat <- hasData(d[["metadata"]][[key1]][[i]][[key3]][[j]], "ensembleTable")
             if (is.data.frame(!is.null(dat))){
               d[["metadata"]][[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- as.list(dat)
             }
 
             # DISTRIBUTION
             # paleoModel[[j]]$distributionTable
-            dat <- has.data(d[["metadata"]][[key1]][[i]][[key3]][[j]], "distributionTable")
+            dat <- hasData(d[["metadata"]][[key1]][[i]][[key3]][[j]], "distributionTable")
             if (is.data.frame(!is.null(dat))){
               d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]] <- as.list(dat)
             } # end dist
@@ -216,7 +216,7 @@ convert.s2m <- function(d, keys){
             # multiples ?
             # convert to multiples
             if (!is.null(dat)){
-              dat <- has.data(d[["metadata"]][[key1]][[1]][[key3]][[j]][["distributionTable"]], 1)
+              dat <- hasData(d[["metadata"]][[key1]][[1]][[key3]][[j]][["distributionTable"]], 1)
               if (is.null(dat) & !is.null(dat)){
                 tmp <- d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]]
                 d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]] <- list()
@@ -227,7 +227,7 @@ convert.s2m <- function(d, keys){
               for (k in 1:length(d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]])){
 
                 # DISTRIBUTION[[k]]
-                dat <- has.data(d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]], k)
+                dat <- hasData(d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]], k)
                 if (is.data.frame(!is.null(dat))){
                   d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- as.list(dat)
                 } # END DISTRIBUTION[[k]]

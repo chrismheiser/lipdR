@@ -4,7 +4,7 @@
 #' @param name Name of current LiPD record
 #' @param d Metadata
 #' @return all.data Final split of metadata and csv data
-collect.csvs <- function(name, d){
+collectCsvs <- function(name, d){
 
   # Combine csv and metadata into a list so we can return multiple items in collect.csvs.section
   all.data <- list()
@@ -16,8 +16,8 @@ collect.csvs <- function(name, d){
 
   # Traverse one section at a time
   # Parallel: Get CSV from metadata, and remove CSV from metadata
-  all.data <- collect.csvs.section(all.data[["metadata"]], paleos, all.data[["csv"]], name)
-  all.data <- collect.csvs.section(all.data[["metadata"]], chrons, all.data[["csv"]], name)
+  all.data <- collectCsvSection(all.data[["metadata"]], paleos, all.data[["csv"]], name)
+  all.data <- collectCsvSection(all.data[["metadata"]], chrons, all.data[["csv"]], name)
 
   return(all.data)
 }
@@ -31,7 +31,7 @@ collect.csvs <- function(name, d){
 #' @param csv.data Running collection of csv data
 #' @param name LiPD data set name
 #' @return all.data List holding the running collection of separated csv and metadata
-collect.csvs.section <- function(d, keys, csv.data, name){
+collectCsvSection <- function(d, keys, csv.data, name){
   key1 <- keys[[1]]
   key2 <- keys[[2]]
   key3 <- keys[[3]]
@@ -57,7 +57,7 @@ collect.csvs.section <- function(d, keys, csv.data, name){
       # this will be the ending filename for this table
       crumb.meas.filename <- paste0(crumb.pd.meas, j, ".csv")
       pd.meas.i <- pd.meas[[j]]
-      tmp.dat <- parse.table(pd.meas.i)
+      tmp.dat <- parseTable(pd.meas.i)
 
       # only set items if table has data
       if (!is.null(tmp.dat[["table"]])){
@@ -87,7 +87,7 @@ collect.csvs.section <- function(d, keys, csv.data, name){
       # name.paleoData1.paleoModel1.summaryTable
       crumb.sum.filename <- paste0(crumb.pd.mod.i, ".summaryTable", ".csv")
       pd.sum <- pd.mod.i[["summaryTable"]]
-      tmp.dat <- parse.table(pd.sum)
+      tmp.dat <- parseTable(pd.sum)
 
       # only set items if table has data
       if (!is.null(tmp.dat[["table"]])){
@@ -105,7 +105,7 @@ collect.csvs.section <- function(d, keys, csv.data, name){
       # name.paleoData1.paleoModel1.ensembleTable
       crumb.ens.filename <- paste0(crumb.pd.mod.i, ".ensembleTable", ".csv")
       pd.ens <- pd.mod.i[["ensembleTable"]]
-      tmp.dat <- parse.table(pd.ens)
+      tmp.dat <- parseTable(pd.ens)
 
       # only set items if table has data
       if (!is.null(tmp.dat[["table"]])){
@@ -131,7 +131,7 @@ collect.csvs.section <- function(d, keys, csv.data, name){
         # this will be the ending filename for this table
         crumb.dist.filename <- paste0(crumb.dist, k, ".csv")
         pd.dist.i <- pd.dist[[k]]
-        tmp.dat <- parse.table(pd.dist.i)
+        tmp.dat <- parseTable(pd.dist.i)
 
         # only set items if table has data
         if (!is.null(tmp.dat[["table"]])){
@@ -162,7 +162,7 @@ collect.csvs.section <- function(d, keys, csv.data, name){
 #' @keywords internal
 #' @param table Table of data
 #' @return table Table w/o csv, csv Value columns
-parse.table <- function(table){
+parseTable <- function(table){
 
   # list to hold each column for this table
   vals <- list()
@@ -187,7 +187,7 @@ parse.table <- function(table){
               # the end of the range is the start col + the cols in the matrix
               num.cols <- dim(table[["columns"]][[k]][["values"]])[2]
               # set the range as the number
-              nums <- create.range(curr.num, num.cols)
+              nums <- createRange(curr.num, num.cols)
               table[["columns"]][[k]][["number"]] <- nums
               # the beginning point for the next loop is right after the finish of this loop.
               curr.num <- curr.num + num.cols
@@ -215,7 +215,7 @@ parse.table <- function(table){
 #' @keywords internal
 #' @param csv.data List of Lists of csv column data
 #' @return success Boolean for successful csv write
-write.csvs <- function(csv.data){
+writeCsvs <- function(csv.data){
 
   success <- TRUE
   csv.names <- names(csv.data)

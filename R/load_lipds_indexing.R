@@ -11,15 +11,15 @@
 #' @param D The lipd library
 #' @param lpds list of all LiPD files (no extension)
 #' @return D modified lipd library
-index.by.name <- function(D, lpds){
+indexByName <- function(D, lpds){
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chron <- c("chronData", "chronMeasurementTable", "chronModel")
 
   for (lipd in 1:length(lpds)){
     name <- lpds[[lipd]]
-    D[[name]] <- index.section(D[[name]], paleo)
-    D[[name]] <- index.section(D[[name]], chron)
-    D[[name]] <- index.geo(D[[name]])
+    D[[name]] <- indexSection(D[[name]], paleo)
+    D[[name]] <- indexSection(D[[name]], chron)
+    D[[name]] <- indexGeo(D[[name]])
   }
 
   return(D)
@@ -31,14 +31,14 @@ index.by.name <- function(D, lpds){
 #' @param d LiPD metadata
 #' @param keys Section keys
 #' @return d Modified LiPD metadata
-index.section <- function(d, keys){
+indexSection <- function(d, keys){
 
   key1 <- keys[[1]]
   key2 <- keys[[2]]
   key3 <- keys[[3]]
 
   # d$paleoData
-  pc <- has.data(d[["metadata"]], key1)
+  pc <- hasData(d[["metadata"]], key1)
 
   # section
   if (!is.null(pc)){
@@ -48,8 +48,8 @@ index.section <- function(d, keys){
       for (j in 1:length(pc[[i]][[key2]])){
 
         # check in measurement table
-        if (!is.null(has.data(pc[[i]][[key2]], j))){
-          new.table <- move.cols.up(pc[[i]][[key2]][[j]])
+        if (!is.null(hasData(pc[[i]][[key2]], j))){
+          new.table <- moveColsUp(pc[[i]][[key2]][[j]])
           d[["metadata"]][[key1]][[i]][[key2]][[j]] <- new.table
         }
       } ## measurement
@@ -58,21 +58,21 @@ index.section <- function(d, keys){
       for (j in 1:length(pc[[i]][[key3]])){
 
         # summary
-        if (!is.null(has.data(pc[[i]][[key3]][[j]], "summaryTable"))){
-          new.table <- move.cols.up(pc[[i]][[key3]][[j]][["summaryTable"]])
+        if (!is.null(hasData(pc[[i]][[key3]][[j]], "summaryTable"))){
+          new.table <- moveColsUp(pc[[i]][[key3]][[j]][["summaryTable"]])
           d[["metadata"]][[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new.table
       } # end summary
 
         # ensemble
-        if (!is.null(has.data(pc[[i]][[key3]][[j]], "ensembleTable"))){
-          new.table <- move.cols.up(pc[[i]][[key3]][[j]][["ensembleTable"]])
+        if (!is.null(hasData(pc[[i]][[key3]][[j]], "ensembleTable"))){
+          new.table <- moveColsUp(pc[[i]][[key3]][[j]][["ensembleTable"]])
           d[["metadata"]][[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new.table
         } # end ensemble
 
         # distribution
-        if(!is.null(has.data(pc[[i]][[key3]][[j]], "distributionTable"))){
+        if(!is.null(hasData(pc[[i]][[key3]][[j]], "distributionTable"))){
           for (k in 1:length(pc[[i]][[key3]][[j]][["distributionTable"]])){
-            new.table <- move.cols.up(pc[[i]][[key3]][[j]][["distributionTable"]][[k]])
+            new.table <- moveColsUp(pc[[i]][[key3]][[j]][["distributionTable"]][[k]])
             d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new.table
           }
         } ## end distribution
@@ -89,7 +89,7 @@ index.section <- function(d, keys){
 #' @keywords internal
 #' @param table Table to be reorganized
 #' @return table Modified table
-move.cols.up <- function(table){
+moveColsUp <- function(table){
   #look for columns
   if(is.null(table[["columns"]])){
     #already been removed - just needs to be named
