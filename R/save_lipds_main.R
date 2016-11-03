@@ -59,7 +59,7 @@ multiParse <- function(D){
         print(sprintf("saving: %s", lpds[[i]]))
         singleParse(d, lpds[[i]])
     }, error=function(cond){
-      print(sprintf("error saving: %s", lpds[[i]]))
+      print(paste0("error saving: ", lpds[[i]], ": ", cond))
     })
 
   }

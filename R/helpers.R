@@ -25,7 +25,7 @@ confirmLipdVersion <- function(j){
   # Check for the lipdversion key in the metadata
   if(!"lipdversion" %in% keys && !"lipd_version" %in% keys){
     # Key not found, insert it and default to v1.2
-    j[["LiPDVersion"]] = 1.2
+    j$LiPDVersion = 1.2
   }
   return(j)
 }
@@ -55,7 +55,7 @@ browseDialog <- function(ans){
     })
 
   # parse the dir path. don't keep the filename
-  if (ans == "m" | is.null(ans)){
+  if (ans == "m" || is.null(ans)){
     dir.path = dirname(path)
     one.file = NULL
   }

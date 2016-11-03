@@ -23,65 +23,100 @@ indexByNumber <- function(d){
 #' @param keys Section keys
 #' @return d Modified metadata
 indexSection <- function(d, keys){
-  key1 <- keys[[1]]
-  key2 <- keys[[2]]
-  key3 <- keys[[3]]
-
-  # d$paleoData
-  for (i in 1:length(d[[key1]])){
-
-    # d$paleoData[[i]]
-
-    # d$paleoData[[i]]paleoMeasurementTable
-    for (j in 1:length(d[[key1]][[i]][[key2]])){
-
-      # d$paleoData[[i]]paleoMeasurementTable[[j]]
-      table <- d[[key1]][[i]][[key2]][[j]]
-
-      if(!is.null(table)){
-        new <- moveColsDown(table)
-        d[[key1]][[i]][[key2]][[j]] <- new
-      }
-
-    } # end meas
-
-    # d$paleoData[[i]]paleoModel
-    for (j in 1:length(d[[key1]][[i]][[key3]])){
-
-      # d$paleoData[[i]]paleoModel[[j]]
-
-      # d$paleoData[[i]]paleoModel[[j]]$summaryTable - should only be one
-      table <- d[[key1]][[i]][[key3]][[j]][["summaryTable"]]
-      if (!is.null(table)){
-        new <- moveColsDown(table)
-        d[[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new
-      }
-
-      # d$paleoData[[i]]paleoModel[[j]]$ensembleTable - should only be one
-      table <- d[[key1]][[i]][[key3]][[j]][["ensembleTable"]]
-      if (!is.null(table)){
-        new <- moveColsDown(table)
-        d[[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new
-      }
-      # d$paleoData[[i]]paleoModel[[j]]$distributionTable - can be one or many
-      for (k in 1:length(d[[key1]][[i]][[key3]][[j]][["distributionTable"]])){
-
-        # d$paleoData[[i]]paleoModel[[j]]$distributionTable[[k]]
-        table <- d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]]
-        if (!is.null(table)){
-          new <- moveColsDown(table)
-          # only add if the table exists
-          d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new
+  
+  tryCatch({
+    key1 <- keys[[1]]
+    key2 <- keys[[2]]
+    key3 <- keys[[3]]
+    
+    if(key1 %in% names(d)){
+      
+      if(!isNullOb(d[[key1]])){
+        # d$paleoData
+        for (i in 1:length(d[[key1]])){
+          
+          # d$paleoData[[i]]
+          
+          # d$paleoData[[i]]paleoMeasurementTable
+          for (j in 1:length(d[[key1]][[i]][[key2]])){
+            
+            # d$paleoData[[i]]paleoMeasurementTable[[j]]
+            table <- d[[key1]][[i]][[key2]][[j]]
+            
+            if(!is.null(table)){
+              new <- moveColsDown(table)
+              d[[key1]][[i]][[key2]][[j]] <- new
+            }
+            
+          } # end meas
+          
+          # d$paleoData[[i]]paleoModel
+          for (j in 1:length(d[[key1]][[i]][[key3]])){
+            
+            # d$paleoData[[i]]paleoModel[[j]]
+            
+            # d$paleoData[[i]]paleoModel[[j]]$summaryTable - should only be one
+            table <- d[[key1]][[i]][[key3]][[j]][["summaryTable"]]
+            if (!is.null(table)){
+              new <- moveColsDown(table)
+              d[[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new
+            }
+            
+            # d$paleoData[[i]]paleoModel[[j]]$ensembleTable - should only be one
+            table <- d[[key1]][[i]][[key3]][[j]][["ensembleTable"]]
+            if (!is.null(table)){
+              new <- moveColsDown(table)
+              d[[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new
+            }
+            # d$paleoData[[i]]paleoModel[[j]]$distributionTable - can be one or many
+            for (k in 1:length(d[[key1]][[i]][[key3]][[j]][["distributionTable"]])){
+              
+              # d$paleoData[[i]]paleoModel[[j]]$distributionTable[[k]]
+              table <- d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]]
+              if (!is.null(table)){
+                new <- moveColsDown(table)
+                # only add if the table exists
+                d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new
+              }
+              
+            } # end distribution
+            
+          } # end model
+          
+          # check if paleoData[[i]] is using a top level table name, or if this is the table object
+          if (!is.null(d[[key1]]) && !key2 %in% names(d[[key1]])){
+            # Table(s) indexed by name. Move table(s) up and move the tableName inside the table
+            d[[key1]] = moveTableUp(d[[key1]], key1, key2)
+          }
         }
-
-      } # end distribution
-
-    } # end model
-
-  } # end section
-
+      } # end section
+    }
+  }, error=function(cond){
+    print(paste0("error save_lipds_indexing:indexSection: ", cond))
+  })
   return(d)
 }
+
+#' Unindex tables by name. Move to index by number. 
+#' @export
+#' @keywords internal
+#' @param table Table data
+#' @return table Modified table data
+moveTableUp <- function(table, pc, tableType){
+  d = list()
+  tableNameKey = paste0(pc, "Name")
+  # loop, in case of multiple tables
+  for(i in 1:length(table)){
+    # the table name at the top level
+    tableNameVal = names(table)[[i]]
+    # Insert the table name into the table
+    table[[i]][[tableType]][[1]][[tableNameKey]] = tableNameVal
+    d[[i]] = table[[i]]
+  }
+  # table is still not sorted correctly. fix it here. s1 is still at top
+  return(d)
+}
+
 
 #' Remove column names indexing. Set them to index by their column number
 #' Place the new columns under a "columns" list

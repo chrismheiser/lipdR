@@ -4,17 +4,17 @@
 ## files
 ###############################################
 
-#' Import each of the required modules for the package
-#' @export
-#' @keywords internal
-#' @return none
-setModules <- function(){
-  suppressPackageStartupMessages(library(tools, quietly=TRUE, verbose=FALSE))
-  suppressPackageStartupMessages(library(Kmisc, quietly=TRUE, verbose=FALSE))
-  suppressPackageStartupMessages(library(RJSONIO, quietly=TRUE, verbose=FALSE))
-  suppressPackageStartupMessages(library(jsonlite, quietly=TRUE, verbose=FALSE))
-  suppressPackageStartupMessages(library(BBmisc, quietly=TRUE, verbose=FALSE))
-}
+#' #' Import each of the required modules for the package
+#' #' @export
+#' #' @keywords internal
+#' #' @return none
+#' setModules <- function(){
+#'   suppressPackageStartupMessages(library(tools, quietly=TRUE, verbose=FALSE))
+#'   suppressPackageStartupMessages(library(Kmisc, quietly=TRUE, verbose=FALSE))
+#'   suppressPackageStartupMessages(library(RJSONIO, quietly=TRUE, verbose=FALSE))
+#'   suppressPackageStartupMessages(library(jsonlite, quietly=TRUE, verbose=FALSE))
+#'   suppressPackageStartupMessages(library(BBmisc, quietly=TRUE, verbose=FALSE))
+#' }
 
 #' Get list of all LiPD files in current directory
 #' @export

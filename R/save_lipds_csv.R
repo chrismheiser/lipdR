@@ -32,131 +32,138 @@ collectCsvs <- function(name, d){
 #' @param name LiPD data set name
 #' @return all.data List holding the running collection of separated csv and metadata
 collectCsvSection <- function(d, keys, csv.data, name){
-  key1 <- keys[[1]]
-  key2 <- keys[[2]]
-  key3 <- keys[[3]]
-
-  # name
-  crumb.pd <- paste(name, key1, sep=".")
-  pd <- d[[key1]]
-
-  # name.paleoData
-  for (i in 1:length(pd)){
-
-    # name.paleoData1
-    crumb.pd.i <- paste0(crumb.pd, i)
-    pd.i <- pd[[i]]
-
-    # name.paleoData1.paleoMeasurementTable
-    crumb.pd.meas <- paste(crumb.pd.i, key2, sep=".")
-    pd.meas <- pd.i[[key2]]
-
-    for (j in 1:length(pd.meas)){
-
-      # name.paleoData1.paleoMeasurementTable1
-      # this will be the ending filename for this table
-      crumb.meas.filename <- paste0(crumb.pd.meas, j, ".csv")
-      pd.meas.i <- pd.meas[[j]]
-      tmp.dat <- parseTable(pd.meas.i)
-
-      # only set items if table has data
-      if (!is.null(tmp.dat[["table"]])){
-        # Set csv in overall output
-        csv.data[[crumb.meas.filename]] <- tmp.dat[["csv"]]
-        # overwrite old table
-        d[[key1]][[i]][[key2]][[j]]<- tmp.dat[["table"]]
-        # overwrite old filename
-        d[[key1]][[i]][[key2]][[j]][["filename"]]<- crumb.meas.filename
-      } # end measurement[i]
-
-    } # end measurement
-
-    # name.paleoData1.paleoModel
-    crumb.pd.mod <- paste(crumb.pd.i, key3, sep=".")
-    pd.mod <- pd.i[[key3]]
-
-    for (j in 1:length(pd.mod)){
-
-      # name.paleoData1.paleoModel1
-      crumb.pd.mod.i <- paste0(crumb.pd.mod, j)
-      pd.mod.i<- pd.mod[[j]]
-
-
-      # SUMMARY TABLE
-
-      # name.paleoData1.paleoModel1.summaryTable
-      crumb.sum.filename <- paste0(crumb.pd.mod.i, ".summaryTable", ".csv")
-      pd.sum <- pd.mod.i[["summaryTable"]]
-      tmp.dat <- parseTable(pd.sum)
-
-      # only set items if table has data
-      if (!is.null(tmp.dat[["table"]])){
-        # Set csv in overall output
-        csv.data[[crumb.sum.filename]] <- tmp.dat[["csv"]]
-        # overwrite old table
-        d[[key1]][[i]][[key3]][[j]][["summaryTable"]]<- tmp.dat[["table"]]
-        # overwrite old filename
-        d[[key1]][[i]][[key3]][[j]][["summaryTable"]][["filename"]]<- crumb.sum.filename
-      } # end summary
-
-
-      # ENSEMBLE TABLE
-
-      # name.paleoData1.paleoModel1.ensembleTable
-      crumb.ens.filename <- paste0(crumb.pd.mod.i, ".ensembleTable", ".csv")
-      pd.ens <- pd.mod.i[["ensembleTable"]]
-      tmp.dat <- parseTable(pd.ens)
-
-      # only set items if table has data
-      if (!is.null(tmp.dat[["table"]])){
-        # Set csv in overall output
-        csv.data[[crumb.ens.filename]] <- tmp.dat[["csv"]]
-        # overwrite old table
-        d[[key1]][[i]][[key3]][[j]][["ensembleTable"]]<- tmp.dat[["table"]]
-        # overwrite old filename
-        d[[key1]][[i]][[key3]][[j]][["ensembleTable"]][["filename"]]<- crumb.ens.filename
-
-      } # end ensemble
-
-
-      # DISTRIBUTION TABLES
-
-      # name.paleoData1.paleoModel1.distributionTable
-      crumb.dist <- paste0(crumb.pd.mod.i, "distributionTable")
-      pd.dist <- pd.mod.i[["distributionTable"]]
-
-      for (k in 1:length(pd.dist)){
-
-        # name.paleoData1.distributionTable1
-        # this will be the ending filename for this table
-        crumb.dist.filename <- paste0(crumb.dist, k, ".csv")
-        pd.dist.i <- pd.dist[[k]]
-        tmp.dat <- parseTable(pd.dist.i)
-
-        # only set items if table has data
-        if (!is.null(tmp.dat[["table"]])){
-          # Set csv in overall output
-          csv.data[[crumb.dist.filename]] <- tmp.dat[["csv"]]
-          # overwrite old table
-          d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]]<- tmp.dat[["table"]]
-          # overwrite old filename
-          d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]][["filename"]]<- crumb.dist.filename
-        } # end distribution[i]
-
-      } # end distribution
-
-    } # end model tables
-
-  } # end chronDatas
-
-  # Can only return one item, so add our two items to a list and use that.
   all.data <- list()
-  all.data[["metadata"]] <- d
-  all.data[["csv"]] <- csv.data
+  tryCatch({
+    key1 <- keys[[1]]
+    key2 <- keys[[2]]
+    key3 <- keys[[3]]
+    
+    if(key1 %in% names(d)){
+      if(!isNullOb(d[[key1]])){
+        # name
+        crumb.pd <- paste(name, key1, sep=".")
+        pd <- d[[key1]]
+        
+        # name.paleoData
+        for (i in 1:length(pd)){
+          
+          # name.paleoData1
+          crumb.pd.i <- paste0(crumb.pd, i)
+          pd.i <- pd[[i]]
+          
+          # name.paleoData1.paleoMeasurementTable
+          crumb.pd.meas <- paste(crumb.pd.i, key2, sep=".")
+          pd.meas <- pd.i[[key2]]
+          
+          for (j in 1:length(pd.meas)){
+            
+            # name.paleoData1.paleoMeasurementTable1
+            # this will be the ending filename for this table
+            crumb.meas.filename <- paste0(crumb.pd.meas, j, ".csv")
+            pd.meas.i <- pd.meas[[j]]
+            tmp.dat <- parseTable(pd.meas.i)
+            
+            # only set items if table has data
+            if (!is.null(tmp.dat[["table"]])){
+              # Set csv in overall output
+              csv.data[[crumb.meas.filename]] <- tmp.dat[["csv"]]
+              # overwrite old table
+              d[[key1]][[i]][[key2]][[j]]<- tmp.dat[["table"]]
+              # overwrite old filename
+              d[[key1]][[i]][[key2]][[j]][["filename"]]<- crumb.meas.filename
+            } # end measurement[i]
+            
+          } # end measurement
+          
+          # name.paleoData1.paleoModel
+          crumb.pd.mod <- paste(crumb.pd.i, key3, sep=".")
+          pd.mod <- pd.i[[key3]]
+          
+          for (j in 1:length(pd.mod)){
+            
+            # name.paleoData1.paleoModel1
+            crumb.pd.mod.i <- paste0(crumb.pd.mod, j)
+            pd.mod.i<- pd.mod[[j]]
+            
+            
+            # SUMMARY TABLE
+            
+            # name.paleoData1.paleoModel1.summaryTable
+            crumb.sum.filename <- paste0(crumb.pd.mod.i, ".summaryTable", ".csv")
+            pd.sum <- pd.mod.i[["summaryTable"]]
+            tmp.dat <- parseTable(pd.sum)
+            
+            # only set items if table has data
+            if (!is.null(tmp.dat[["table"]])){
+              # Set csv in overall output
+              csv.data[[crumb.sum.filename]] <- tmp.dat[["csv"]]
+              # overwrite old table
+              d[[key1]][[i]][[key3]][[j]][["summaryTable"]]<- tmp.dat[["table"]]
+              # overwrite old filename
+              d[[key1]][[i]][[key3]][[j]][["summaryTable"]][["filename"]]<- crumb.sum.filename
+            } # end summary
+            
+            
+            # ENSEMBLE TABLE
+            
+            # name.paleoData1.paleoModel1.ensembleTable
+            crumb.ens.filename <- paste0(crumb.pd.mod.i, ".ensembleTable", ".csv")
+            pd.ens <- pd.mod.i[["ensembleTable"]]
+            tmp.dat <- parseTable(pd.ens)
+            
+            # only set items if table has data
+            if (!is.null(tmp.dat[["table"]])){
+              # Set csv in overall output
+              csv.data[[crumb.ens.filename]] <- tmp.dat[["csv"]]
+              # overwrite old table
+              d[[key1]][[i]][[key3]][[j]][["ensembleTable"]]<- tmp.dat[["table"]]
+              # overwrite old filename
+              d[[key1]][[i]][[key3]][[j]][["ensembleTable"]][["filename"]]<- crumb.ens.filename
+              
+            } # end ensemble
+            
+            
+            # DISTRIBUTION TABLES
+            
+            # name.paleoData1.paleoModel1.distributionTable
+            crumb.dist <- paste0(crumb.pd.mod.i, "distributionTable")
+            pd.dist <- pd.mod.i[["distributionTable"]]
+            
+            for (k in 1:length(pd.dist)){
+              
+              # name.paleoData1.distributionTable1
+              # this will be the ending filename for this table
+              crumb.dist.filename <- paste0(crumb.dist, k, ".csv")
+              pd.dist.i <- pd.dist[[k]]
+              tmp.dat <- parseTable(pd.dist.i)
+              
+              # only set items if table has data
+              if (!is.null(tmp.dat[["table"]])){
+                # Set csv in overall output
+                csv.data[[crumb.dist.filename]] <- tmp.dat[["csv"]]
+                # overwrite old table
+                d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]]<- tmp.dat[["table"]]
+                # overwrite old filename
+                d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]][["filename"]]<- crumb.dist.filename
+              } # end distribution[i]
+              
+            } # end distribution
+            
+          } # end model tables
+          
+        } # end chronDatas
+        
+        # Can only return one item, so add our two items to a list and use that.
+        all.data[["metadata"]] <- d
+        all.data[["csv"]] <- csv.data
+      }
+    } #if key1 in d
+  }, error=function(cond){
+    print(sprintf("error in save_lipds_csv:collectCsvSection %s", cond))
+  })
   return(all.data)
-
-}
-
+  }
+  
 #' Parse the csv value columns from the table, then split the metadata from the csv
 #' @export
 #' @keywords internal
@@ -164,20 +171,21 @@ collectCsvSection <- function(d, keys, csv.data, name){
 #' @return table Table w/o csv, csv Value columns
 parseTable <- function(table){
 
-  # list to hold each column for this table
-  vals <- list()
-  out <- list()
-
-  # if pd.sum exists
-  if (!is.null(table)){
-
-    # if a columns entry exists
-    if (!is.null(table[["columns"]])){
-      curr.num <- 1
-      # name.paleoData1.paleoModel1.summaryTable $columns
-      for (k in 1:length(table[["columns"]])){
-        # add values for this column to the main list, then remove values
-        if (!is.null(table[["columns"]][[k]][["values"]])){
+  tryCatch({
+    # list to hold each column for this table
+    vals <- list()
+    out <- list()
+    
+    # if pd.sum exists
+    if (!is.null(table)){
+      
+      # if a columns entry exists
+      if (!is.null(table[["columns"]])){
+        curr.num <- 1
+        # name.paleoData1.paleoModel1.summaryTable $columns
+        for (k in 1:length(table[["columns"]])){
+          # add values for this column to the main list, then remove values
+          if (!is.null(table[["columns"]][[k]][["values"]])){
             vals[[k]] <- table[["columns"]][[k]][["values"]]
             len <- NCOL(table[["columns"]][[k]][["values"]])
             # remove the "number" entry for the column, then replace it with the index of this loop
@@ -197,14 +205,16 @@ parseTable <- function(table){
               curr.num <- curr.num + 1
             }
             table[["columns"]][[k]][["values"]] <- NULL
+          }
         }
       }
     }
-  }
-
-  out[["table"]] <- table
-  out[["csv"]] <- vals
-
+    out[["table"]] <- table
+    out[["csv"]] <- vals
+    
+  }, error=function(cond){
+    print(sprintf("error in save_lipds_csv:parseTable: %s", cond))
+  })
   return(out)
 }
 
