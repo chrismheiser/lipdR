@@ -1,3 +1,7 @@
 
 R/bagit.py
 .Rproj.user
+
+.RData
+
+.Rhistory

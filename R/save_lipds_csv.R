@@ -16,8 +16,8 @@ collectCsvs <- function(name, d){
 
   # Traverse one section at a time
   # Parallel: Get CSV from metadata, and remove CSV from metadata
-  all.data <- collectCsvSection(all.data[["metadata"]], paleos, all.data[["csv"]], name)
-  all.data <- collectCsvSection(all.data[["metadata"]], chrons, all.data[["csv"]], name)
+  all.data <- collectCsvSection(all.data, paleos, name)
+  all.data <- collectCsvSection(all.data, chrons, name)
 
   return(all.data)
 }
@@ -31,8 +31,9 @@ collectCsvs <- function(name, d){
 #' @param csv.data Running collection of csv data
 #' @param name LiPD data set name
 #' @return all.data List holding the running collection of separated csv and metadata
-collectCsvSection <- function(d, keys, csv.data, name){
-  all.data <- list()
+collectCsvSection <- function(all.data, keys, name){
+  d <- all.data[["metadata"]]
+  csv.data <- all.data[["csv"]]
   tryCatch({
     key1 <- keys[[1]]
     key2 <- keys[[2]]
@@ -154,8 +155,10 @@ collectCsvSection <- function(d, keys, csv.data, name){
         } # end chronDatas
         
         # Can only return one item, so add our two items to a list and use that.
-        all.data[["metadata"]] <- d
-        all.data[["csv"]] <- csv.data
+        new.data = list()
+        new.data[["metadata"]] <- d
+        new.data[["csv"]] <- csv.data
+        return(new.data)
       }
     } #if key1 in d
   }, error=function(cond){
