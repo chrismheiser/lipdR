@@ -12,7 +12,7 @@ loadLipds <- function(){
   options(warn = -1)
 
   # Ask user where files are stored
-  path.and.file <- getLocalPath()
+  path.and.file <- getSrcOrDst()
 
   # Do initial set up
   working.dir <- path.and.file[["dir"]]
@@ -35,7 +35,7 @@ loadLipds <- function(){
     D <- convertVersion(D)
 
     # Now you have all the data loaded in memory, place data from csv into columns
-    D <- mergeMain(D, lpds)
+    D <- addCsvToMetadata(D, lpds)
 
     # Change columns and tables to index-by-name
     D <- indexByName(D, lpds)

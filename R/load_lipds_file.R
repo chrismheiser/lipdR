@@ -62,7 +62,7 @@ getData <- function(){
   # jsonld file - one per lpd
   j <- listFiles("jsonld")
   # import jsonld file
-  j.data <- fromJSON(j, simplifyDataFrame = FALSE)
+  j.data <- jsonlite::fromJSON(j, simplifyDataFrame = FALSE)
 
   # combine data for return.
   data.list[["metadata"]] <- j.data
