@@ -186,7 +186,7 @@ indexGeo <- function(d){
 
   if (!is.null(geo)){
     # properties
-    if (!is.null(geo$properties)){
+    if (!isNullOb(geo$properties)){
       gnames <- names(geo$properties)
       for (i in 1:length(gnames)){
         tmp[[gnames[[i]]]] <- geo$properties[[i]]
@@ -194,7 +194,7 @@ indexGeo <- function(d){
     } # end properties
 
     # geometry
-    if (!is.null(geo$geometry)){
+    if (!isNullOb(geo$geometry)){
       gnames <- names(geo$geometry)
       for (i in 1:length(gnames)){
         if (gnames[[i]] == "coordinates"){

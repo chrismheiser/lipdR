@@ -63,7 +63,10 @@ getData <- function(){
   j <- listFiles("jsonld")
   # import jsonld file
   j.data <- jsonlite::fromJSON(j, simplifyDataFrame = FALSE)
-
+  
+  # remove empty items from the json
+  j.data <- removeEmptyRec(j.data)
+  
   # combine data for return.
   data.list[["metadata"]] <- j.data
   data.list[["csv"]] <- c.data
