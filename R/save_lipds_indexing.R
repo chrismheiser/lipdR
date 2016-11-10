@@ -83,9 +83,10 @@ indexSection <- function(d, keys){
             
           } # end model
           
-          # check if paleoData[[i]] is using a top level table name, or if this is the table object
-          if (!is.null(d[[key1]]) && !key2 %in% names(d[[key1]])){
-            # Table(s) indexed by name. Move table(s) up and move the tableName inside the table
+          # if d[[key1]] contains a bunch of table names, then use moveTableUp.
+          # if d[[key1]] contains an array of data tables, then we're all set and no need to do this part.
+          if (!is.null(d[[key1]]) && !isNullOb(names(d[[key1]])) && !key2 %in% names(d[[key1]])){
+            # Table(s) indexed by name. Move table(s) up 2and move the tableName inside the table
             d[[key1]] = moveTableUp(d[[key1]], key1, key2)
           }
         }
@@ -104,17 +105,22 @@ indexSection <- function(d, keys){
 #' @return table Modified table data
 moveTableUp <- function(table, pc, tableType){
   d = list()
-  tableNameKey = paste0(pc, "Name")
-  # loop, in case of multiple tables
-  for(i in 1:length(table)){
-    # the table name at the top level
-    tableNameVal = names(table)[[i]]
-    # Insert the table name into the table
-    table[[i]][[tableType]][[1]][[tableNameKey]] = tableNameVal
-    d[[i]] = table[[i]]
-  }
-  # table is still not sorted correctly. fix it here. s1 is still at top
-  return(d)
+  tryCatch({
+    tableNameKey = paste0(pc, "Name")
+    # loop, in case of multiple tables
+    for(i in 1:length(table)){
+      # the table name at the top level
+      tableNameVal = names(table)[[i]]
+      # Insert the table name into the table
+      table[[i]][[tableType]][[1]][[tableNameKey]] = tableNameVal
+      d[[i]] = table[[i]]
+    }
+    # table is still not sorted correctly. fix it here. s1 is still at top
+    return(d)
+  }, error=function(cond){
+    print(paste0("error save_lipds_indexing: moveTableUp: ", cond))
+  })
+  return(table)
 }
 
 
@@ -131,49 +137,57 @@ moveColsDown <- function(table){
 
   # get a list of variableNames from the columns
   tnames <- names(table)
-  for (i in 1:length(table)){
-    # if it's a list (column), then add it to tmp by index number
-    if (is.list(table[[i]])){
-      # tmp[[i]] <- try({
-      #   tmp[[i]] <- table[[i]][["variableName"]]
-      # })
-      new.cols[[i]] <- table[[i]]
-      vn <- tryCatch({
-        vn <- table[[i]][["variableName"]]
-      }, error = function(cond){
-        return(NULL)
-      })
-      if (is.null(vn)){
-        new.cols[[i]][["variableName"]] <- tnames[[i]]
+  tryCatch({
+    for (i in 1:length(table)){
+      # if it's a list (column), then add it to tmp by index number
+      if (is.list(table[[i]])){
+        # tmp[[i]] <- try({
+        #   tmp[[i]] <- table[[i]][["variableName"]]
+        # })
+        # set the column data into the new.cols at the current index
+        new.cols[[i]] <- table[[i]]
+        # attempt to get the variable name from this table column
+        vn <- tryCatch({
+          vn <- table[[i]][["variableName"]]
+        }, error = function(cond){
+          # if you don't get the variable name beacuse it's missing the key, return none.
+          return(NULL)
+        })
+        # variableName not found, 
+        if (is.null(vn)){
+          new.cols[[i]][["variableName"]] <- tnames[[i]]
+        }
+      }
+      else {
+        # table item is not a column (list). Therefore, it's a root item so set it at the root of the new table
+        tmp[[tnames[[i]]]] <- table[[i]]
       }
     }
-    else {
-      tmp[[tnames[[i]]]] <- table[[i]]
-    }
-  }
-
-  # # remove all null elements
-  # tmp <- tmp[!sapply(tmp, is.null)]
-  #
-  # # make new list by number
-  # if (length(tmp)>0){
-  #   for (i in 1:length(tmp)){
-  #     # get col data
-  #     if (!is.null(tmp[[i]])){
-  #       one.col <- table[[tmp[[i]]]]
-  #       # move data to new cols list
-  #       new.cols[[i]] <- one.col
-  #       # remove entry from table
-  #       table[[tmp[[i]]]] <- NULL
-  #     }
-  #   }
-  # }
-
-  # set columns inside [["columns"]] list in table
-  # table[["columns"]] <- new.cols
-  tmp[["columns"]] <- new.cols
-
-
+    
+    # # remove all null elements
+    # tmp <- tmp[!sapply(tmp, is.null)]
+    #
+    # # make new list by number
+    # if (length(tmp)>0){
+    #   for (i in 1:length(tmp)){
+    #     # get col data
+    #     if (!is.null(tmp[[i]])){
+    #       one.col <- table[[tmp[[i]]]]
+    #       # move data to new cols list
+    #       new.cols[[i]] <- one.col
+    #       # remove entry from table
+    #       table[[tmp[[i]]]] <- NULL
+    #     }
+    #   }
+    # }
+    
+    # set columns inside [["columns"]] list in table
+    # table[["columns"]] <- new.cols
+    tmp[["columns"]] <- new.cols
+    
+  }, error=function(cond){
+    print(paste0("error save_lipds_indexing: moveColsDown ", cond))
+  })
   return(tmp)
 }
 

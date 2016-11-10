@@ -207,6 +207,7 @@ parseTable <- function(table){
               table[["columns"]][[k]][["number"]] <- curr.num
               curr.num <- curr.num + 1
             }
+            # remove 'values' from the column
             table[["columns"]][[k]][["values"]] <- NULL
           }
         }
@@ -241,44 +242,46 @@ writeCsvs <- function(csv.data){
     if (!is.null(success)){
       # one csv file: list of lists. [V1: [column values], V2: [columns values], etc.]
       ref.name <- csv.names[[f]]
-      for (i in 1:length(csv.data[[ref.name]])){
-        col <- csv.data[[ref.name]][[i]]
-
-        # convert to numeric if needed
-        if (is.list(col)){
-          col <- as.numeric(col)
-        }
-        # check if tmp matrix has data or is fresh.
-        if(all(is.na(tmp))){
-          # fresh, so just bind the col itself
-          tmp <- tryCatch({
-            cbind(col, deparse.level = 0)
-          }, error = function(cond){
-            print(sprintf("cbind error: %s", ref.name))
-            return(NULL)
-          })
-        }else{
-          # not fresh, bind the existing with the col
-          tmp <- tryCatch({
-            cbind(tmp, col, deparse.level = 0)
-          }, error = function(cond){
-            if(is.matrix(col)){
-              tmp <- tryCatch({
-                col <- t(col)
-                cbind(tmp, col, deparse.level = 0)
-              }, error = function(cond){
-                print(sprintf("cbind error: %s", ref.name))
-                return(NULL)
-              })
-            }
-            else{
+      if(!isNullOb(csv.data[[ref.name]])){
+        for (i in 1:length(csv.data[[ref.name]])){
+          col <- csv.data[[ref.name]][[i]]
+          
+          # convert to numeric if needed
+          if (is.list(col)){
+            col <- as.numeric(col)
+          }
+          # check if tmp matrix has data or is fresh.
+          if(all(is.na(tmp))){
+            # fresh, so just bind the col itself
+            tmp <- tryCatch({
+              cbind(col, deparse.level = 0)
+            }, error = function(cond){
+              print(sprintf("cbind error: %s", ref.name))
               return(NULL)
+            })
+          }else{
+            # not fresh, bind the existing with the col
+            tmp <- tryCatch({
+              cbind(tmp, col, deparse.level = 0)
+            }, error = function(cond){
+              if(is.matrix(col)){
+                tmp <- tryCatch({
+                  col <- t(col)
+                  cbind(tmp, col, deparse.level = 0)
+                }, error = function(cond){
+                  print(sprintf("cbind error: %s", ref.name))
+                  return(NULL)
+                })
+              }
+              else{
+                return(NULL)
+              }
+            })
+            # cbind didn't work here, it's possible the matrix is transposed wrong.
+            # give it another try after transposing it.
+            if (is.null(tmp) & is.matrix(col)){
+              
             }
-          })
-          # cbind didn't work here, it's possible the matrix is transposed wrong.
-          # give it another try after transposing it.
-          if (is.null(tmp) & is.matrix(col)){
-
           }
         }
       }
