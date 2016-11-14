@@ -21,7 +21,6 @@ indexByName <- function(D, lpds){
     D[[name]] <- indexSection(D[[name]], chron)
     D[[name]] <- indexGeo(D[[name]])
   }
-
   return(D)
 }
 
@@ -41,46 +40,49 @@ indexSection <- function(d, keys){
   pc <- hasData(d[["metadata"]], key1)
 
   # section
-  if (!is.null(pc)){
-    for (i in 1:length(pc)){
-
-      # measurement
-      for (j in 1:length(pc[[i]][[key2]])){
-
-        # check in measurement table
-        if (!is.null(hasData(pc[[i]][[key2]], j))){
-          new.table <- moveColsUp(pc[[i]][[key2]][[j]])
-          d[["metadata"]][[key1]][[i]][[key2]][[j]] <- new.table
-        }
-      } ## measurement
-
-      # loop in models
-      for (j in 1:length(pc[[i]][[key3]])){
-
-        # summary
-        if (!is.null(hasData(pc[[i]][[key3]][[j]], "summaryTable"))){
-          new.table <- moveColsUp(pc[[i]][[key3]][[j]][["summaryTable"]])
-          d[["metadata"]][[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new.table
-      } # end summary
-
-        # ensemble
-        if (!is.null(hasData(pc[[i]][[key3]][[j]], "ensembleTable"))){
-          new.table <- moveColsUp(pc[[i]][[key3]][[j]][["ensembleTable"]])
-          d[["metadata"]][[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new.table
-        } # end ensemble
-
-        # distribution
-        if(!is.null(hasData(pc[[i]][[key3]][[j]], "distributionTable"))){
-          for (k in 1:length(pc[[i]][[key3]][[j]][["distributionTable"]])){
-            new.table <- moveColsUp(pc[[i]][[key3]][[j]][["distributionTable"]][[k]])
-            d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new.table
+  tryCatch({
+    if (!is.null(pc)){
+      for (i in 1:length(pc)){
+        
+        # measurement
+        for (j in 1:length(pc[[i]][[key2]])){
+          
+          # check in measurement table
+          if (!is.null(hasData(pc[[i]][[key2]], j))){
+            new.table <- moveColsUp(pc[[i]][[key2]][[j]])
+            d[["metadata"]][[key1]][[i]][[key2]][[j]] <- new.table
           }
-        } ## end distribution
-
-      } ## end models
+        } ## measurement
+        
+        # loop in models
+        for (j in 1:length(pc[[i]][[key3]])){
+          
+          # summary
+          if (!is.null(hasData(pc[[i]][[key3]][[j]], "summaryTable"))){
+            new.table <- moveColsUp(pc[[i]][[key3]][[j]][["summaryTable"]])
+            d[["metadata"]][[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new.table
+          } # end summary
+          
+          # ensemble
+          if (!is.null(hasData(pc[[i]][[key3]][[j]], "ensembleTable"))){
+            new.table <- moveColsUp(pc[[i]][[key3]][[j]][["ensembleTable"]])
+            d[["metadata"]][[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new.table
+          } # end ensemble
+          
+          # distribution
+          if(!is.null(hasData(pc[[i]][[key3]][[j]], "distributionTable"))){
+            for (k in 1:length(pc[[i]][[key3]][[j]][["distributionTable"]])){
+              new.table <- moveColsUp(pc[[i]][[key3]][[j]][["distributionTable"]][[k]])
+              d[["metadata"]][[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new.table
+            }
+          } ## end distribution
+          
+        } ## end models
+      }
     }
-  }
-
+  }, error=function(cond){
+    print(paste0("error load_lipds_indexing: indexSection: ", key1, ", ", cond));
+  })
   return(d)
 }
 

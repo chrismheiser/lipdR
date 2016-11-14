@@ -62,13 +62,18 @@ getData <- function(){
   # jsonld file - one per lpd
   j <- listFiles("jsonld")
   # import jsonld file
-  j.data <- jsonlite::fromJSON(j, simplifyDataFrame = FALSE)
-  
-  # remove empty items from the json
-  j.data <- removeEmptyRec(j.data)
-  
-  # combine data for return.
-  data.list[["metadata"]] <- j.data
+  if (length(j)>1){
+    print("error load_lipds_file: more than 1 jsonld file found")
+    data.list[["metadata"]] <- list()
+  } else {
+    # use jsonlite to parse json from file
+    j.data <- jsonlite::fromJSON(j, simplifyDataFrame = FALSE)
+    # remove empty items from the json
+    j.data <- removeEmptyRec(j.data)
+    # combine data for return.
+    data.list[["metadata"]] <- j.data
+  }
+
   data.list[["csv"]] <- c.data
   # data.list[["csv"]] <- clean.csv(data.list[["csv"]])
 
