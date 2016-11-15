@@ -36,30 +36,28 @@ getListLpdExt <- function(path.and.file){
 }
 
 
-#' Unzip all LiPD files to the temporary directory
+#' Unzip LiPD file to the temporary directory
 #' @export
 #' @keywords internal
-#' @param files LiPD files to unzip
+#' @param file One LiPD file to unzip
 #' @param tmp Temporary directory
 #' @return none
-unzipper <- function(files, tmp){
-  if(length(files)>0){
-    sapply(files, function(f){
-      unzip(f, exdir = tmp)
-    })
+unzipper <- function(file, tmp){
+  if(length(file)>0){
+    # sapply(files, function(f){
+    #   unzip(f, exdir = tmp)
+    # })
+    unzip(file, exdir = tmp)
   }
 }
 
-#' Remove the file extension from string names
+#' Remove the file extension from string name
 #' @export
-#' @param files_ext List of LiPD filenames w. ext
-#' @return x LiPD filename
-stripExtension <- function(files_ext){
-  x <- sapply(files_ext, function(f){
-    Kmisc::strip_extension(f)
-  })
-  x <- as.character(x)
-  return(x)
+#' @param filename One LiPD filename
+#' @return x LiPD filename w/o extension
+stripExtension <- function(filename){
+  filename <- Kmisc::strip_extension(filename)
+  return(filename)
 }
 
 #' Get list of csv files in current directory and below
@@ -74,19 +72,14 @@ listFiles <- function(x){
   return(f)
 }
 
-#' Remove CSV and metadata layer from our lipd library. Also, remove empties
+#' Remove CSV and metadata layer from LiPD file. Also, remove empties
 #' @export
 #' @keywords internal
-#' @param D LiPD Library
-#' @param lpds List of LiPD files in the library
-#' @return D Modified lipd library
-removeLayers <- function(D, lpds){
-  for (i in 1:length(lpds)){
-    name <- lpds[[i]]
-    new.meta <- removeEmptyRec(D[[name]][["metadata"]])
-    D[[name]] <- new.meta
-  }
-  return(D)
+#' @param d LiPD file
+#' @return d Modified LiPD file
+removeLayers <- function(d){
+  d <- removeEmptyRec(d[["metadata"]])
+  return(d)
 }
 
 #' Ask if user wants to load one file or a directory with multiple files.

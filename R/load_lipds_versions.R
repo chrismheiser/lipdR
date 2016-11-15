@@ -7,38 +7,48 @@
 #' Convert LiPD version structure whenever necessary
 #' @export
 #' @keywords internal
-#' @param D LiPD Library
-#' @return D modified LiPD Library
-convertVersion <- function(D){
-  # Loop once for every LiPD object
-  for (i in 1:length(D)){
-    # Check which version this LiPD file is
-    lipd <- D[[i]]
-    version <- getVersion(lipd)
+#' @param d One LiPD file
+#' @return d Modified LiPD file
+convertVersion <- function(d){
 
-    # check and convert any data frames into lists
-    lipd <- convertDfsLst(lipd)
+  # Check which version this LiPD file is
+  d <- checkVersion(d)
 
-    # Replace the LiPD data with the new converted structure
-    D[[i]] <- lipd
-  }
-  return(D)
+  # check and convert any data frames into lists
+  d <- convertDfsLst(d)
+
+  return(d)
 }
 
-#' Get the version number from metadata
+#' Check the version number from metadata
 #' @export
 #' @keywords internal
 #' @param d LiPD Metadata
 #' @return version LiPD version number
-getVersion <- function(d){
+checkVersion <- function(d){
   version <- as.numeric(d[["metadata"]][["LiPDVersion"]])
-  if (length(version)==0){
-    version <- 1.0
+  if (isNullOb(version)){
+    d <- setVersion(d, 1.0)
   }
   else if (!(version %in% c(1, 1.0, 1.1, 1.2))){
     print(sprintf("LiPD Version is invalid: %s", version))
   }
-  return(version)
+  return(d)
+}
+
+#' Set the LiPD version field
+#' @export
+#' @keywords internal
+#' @param d LiPD Metadata
+#' @param ver Version number
+#' @return d Modified LiPD Metadata
+setVersion <- function(d, ver){
+  tryCatch({
+    d[["metadata"]][["LiPDVersion"]] <- ver
+  }, error=function(cond){
+    print("load_lipds_versions:setVersion: unable to set new LiPD version")
+  })
+  return(d)
 }
 
 #' Check / convert and fixed data frames into scalable lists

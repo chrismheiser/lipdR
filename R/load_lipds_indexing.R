@@ -8,20 +8,15 @@
 #' Change index-by-number to index-by-variableName
 #' @export
 #' @keywords internal
-#' @param D The lipd library
-#' @param lpds list of all LiPD files (no extension)
-#' @return D modified lipd library
-indexByName <- function(D, lpds){
+#' @param d LiPD file
+#' @return d Modified LiPD file
+indexByName <- function(d){
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chron <- c("chronData", "chronMeasurementTable", "chronModel")
-
-  for (lipd in 1:length(lpds)){
-    name <- lpds[[lipd]]
-    D[[name]] <- indexSection(D[[name]], paleo)
-    D[[name]] <- indexSection(D[[name]], chron)
-    D[[name]] <- indexGeo(D[[name]])
-  }
-  return(D)
+  d <- indexSection(d, paleo)
+  d <- indexSection(d, chron)
+  d <- indexGeo(d)
+  return(d)
 }
 
 #' Change index-by-number for one section

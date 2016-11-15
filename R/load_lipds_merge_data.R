@@ -6,21 +6,14 @@
 #' Merge Main. Call the individual steps of merge for each file.
 #' @export
 #' @keywords internal
-#' @param D LiPD Library
-#' @param lpds LiPD names
-#' @return D Merged LiPD Library
-addCsvToMetadata <- function(D, lpds){
-
+#' @param d LiPD Metdata
+#' @return d Modfified LiPD Metadata
+addCsvToMetadata <- function(d){
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chron <- c("chronData", "chronMeasurementTable", "chronModel")
-
-  for (lipd in 1:length(lpds)){
-    name <- lpds[[lipd]]
-    D[[name]] <- mergeDataLipd(D[[name]], paleo)
-    D[[name]] <- mergeDataLipd(D[[name]], chron)
-  }
-
-  return(D)
+  d <- mergeDataLipd(d, paleo)
+  d <- mergeDataLipd(d, chron)
+  return(d)
 }
 
 #' Merge csv numeric data into the metadata columns

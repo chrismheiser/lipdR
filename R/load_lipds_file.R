@@ -4,43 +4,35 @@
 ## memory
 ###############################################
 
-#' Import the data from each csv and jsonld file for given LiPDs
+#' Import the data from each csv and jsonld file for given LiPD
 #' @export
 #' @keywords internal
+#' @param lpd_noext List of lipd files without extention
 #' @param tmp Char path to the temp folder in memory
-#' @param files_noext List of lipd files without extention
 #' @return out.list List of data for each lipd file
-loadLipdFiles <- function(tmp, files_noext){
+loadLipdFile <- function(lpd_noext, tmp){
+  d <- list()
 
   # Move into the tmp folder
   setwd(tmp)
 
-  out.list <- list()
-  file.count <- length(files_noext)
+  print(sprintf("loading: %s", lpd_noext))
+  tryCatch({
+    setwd(lpd_noext)
 
-  for(i in 1:file.count){
-    current <- files_noext[[i]]
-    print(sprintf("loading: %s", current))
-    tryCatch({
-      setwd(current)
+    # real bagit. move into data folder
+    if (dir.exists("data")){ setwd("data") }
 
-      # real bagit. move into data folder
-      if (dir.exists("data")){ setwd("data") }
+    # fake bagit. no data folder. all files in root dir.
+    d <- getData()
+    
+    # Move back up to the tmp directory
+    setwd(tmp)
+  },error=function(cond){
+    print(paste0("Couldn't find the unarchived LiPD data. Make sure your LiPD filename matches the data set name: ", lpd_noext))
+  })
 
-      # fake bagit. no data folder. all files in root dir.
-      data.list <- getData()
-
-      # compiled list of all data
-      out.list[[files_noext[[i]]]] <- data.list
-
-      # Move back up to the tmp directory
-      setwd(tmp)
-    },error=function(cond){
-      print("Couldn't find the unarchived LiPD data. Make sure your LiPD filename matches the data set name. ")
-    })
-
-  }
-  return(out.list)
+  return(d)
 }
 
 #' Retrieve and import csv and jsonld files in the current directory.
@@ -63,7 +55,10 @@ getData <- function(){
   j <- listFiles("jsonld")
   # import jsonld file
   if (length(j)>1){
-    print("error load_lipds_file: more than 1 jsonld file found")
+    print("error load_lipds_file: getData: more than 1 jsonld file found")
+    for(i in 1:length(j)){
+      print(j[[i]])
+    }
     data.list[["metadata"]] <- list()
   } else {
     # use jsonlite to parse json from file
