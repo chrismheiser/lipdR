@@ -2,12 +2,12 @@
 % Please edit documentation in R/load_lipds_helpers.R
 \name{unzipper}
 \alias{unzipper}
-\title{Unzip all LiPD files to the temporary directory}
+\title{Unzip LiPD file to the temporary directory}
 \usage{
-unzipper(files, tmp)
+unzipper(file, tmp)
 }
 \arguments{
-\item{files}{LiPD files to unzip}
+\item{file}{One LiPD file to unzip}
 
 \item{tmp}{Temporary directory}
 }
@@ -15,7 +15,7 @@ unzipper(files, tmp)
 none
 }
 \description{
-Unzip all LiPD files to the temporary directory
+Unzip LiPD file to the temporary directory
 }
 \keyword{internal}
 

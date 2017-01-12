@@ -4,15 +4,13 @@
 \alias{indexByName}
 \title{Change index-by-number to index-by-variableName}
 \usage{
-indexByName(D, lpds)
+indexByName(d)
 }
 \arguments{
-\item{D}{The lipd library}
-
-\item{lpds}{list of all LiPD files (no extension)}
+\item{d}{LiPD file}
 }
 \value{
-D modified lipd library
+d Modified LiPD file
 }
 \description{
 Change index-by-number to index-by-variableName

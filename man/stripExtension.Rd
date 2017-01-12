@@ -2,17 +2,17 @@
 % Please edit documentation in R/load_lipds_helpers.R
 \name{stripExtension}
 \alias{stripExtension}
-\title{Remove the file extension from string names}
+\title{Remove the file extension from string name}
 \usage{
-stripExtension(files_ext)
+stripExtension(filename)
 }
 \arguments{
-\item{files_ext}{List of LiPD filenames w. ext}
+\item{filename}{One LiPD filename}
 }
 \value{
-x LiPD filename
+x LiPD filename w/o extension
 }
 \description{
-Remove the file extension from string names
+Remove the file extension from string name
 }
 

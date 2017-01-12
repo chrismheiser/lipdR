@@ -4,13 +4,13 @@
 \alias{convertVersion}
 \title{Convert LiPD version structure whenever necessary}
 \usage{
-convertVersion(D)
+convertVersion(d)
 }
 \arguments{
-\item{D}{LiPD Library}
+\item{d}{One LiPD file}
 }
 \value{
-D modified LiPD Library
+d Modified LiPD file
 }
 \description{
 Convert LiPD version structure whenever necessary

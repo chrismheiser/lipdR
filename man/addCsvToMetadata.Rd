@@ -4,15 +4,13 @@
 \alias{addCsvToMetadata}
 \title{Merge Main. Call the individual steps of merge for each file.}
 \usage{
-addCsvToMetadata(D, lpds)
+addCsvToMetadata(d)
 }
 \arguments{
-\item{D}{LiPD Library}
-
-\item{lpds}{LiPD names}
+\item{d}{LiPD Metdata}
 }
 \value{
-D Merged LiPD Library
+d Modfified LiPD Metadata
 }
 \description{
 Merge Main. Call the individual steps of merge for each file.

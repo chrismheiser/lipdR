@@ -5,16 +5,16 @@
 \title{Collect and remove csv from one section: Paleo or chron
 csv.data format: [ some_filename.csv $columns.data ]}
 \usage{
-collectCsvSection(d, keys, csv.data, name)
+collectCsvSection(all.data, keys, name)
 }
 \arguments{
-\item{d}{Metadata w. values}
-
 \item{keys}{Section keys}
 
-\item{csv.data}{Running collection of csv data}
-
 \item{name}{LiPD data set name}
+
+\item{d}{Metadata w. values}
+
+\item{csv.data}{Running collection of csv data}
 }
 \value{
 all.data List holding the running collection of separated csv and metadata
