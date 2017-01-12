@@ -53,6 +53,7 @@ unzipper <- function(file, tmp){
 
 #' Remove the file extension from string name
 #' @export
+#' @keywords internal
 #' @param filename One LiPD filename
 #' @return x LiPD filename w/o extension
 stripExtension <- function(filename){

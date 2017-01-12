@@ -7,7 +7,6 @@
 
 #' Change index-by-number to index-by-variableName
 #' @export
-#' @keywords internal
 #' @param d LiPD file
 #' @return d Modified LiPD file
 indexByName <- function(d){
@@ -26,7 +25,6 @@ indexByName <- function(d){
 #' @param keys Section keys
 #' @return d Modified LiPD metadata
 indexSection <- function(d, keys){
-
   key1 <- keys[[1]]
   key2 <- keys[[2]]
   key3 <- keys[[3]]

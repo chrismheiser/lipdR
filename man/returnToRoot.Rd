@@ -12,4 +12,5 @@ none
 \description{
 Return to preset "home" working directory
 }
+\keyword{internal}
 

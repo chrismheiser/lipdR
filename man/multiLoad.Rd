@@ -12,4 +12,5 @@ D LiPD Library
 \description{
 Loop over multiple LiPD files. Load one at a time.
 }
+\keyword{internal}
 

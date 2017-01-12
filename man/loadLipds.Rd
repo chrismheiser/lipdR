@@ -12,4 +12,5 @@ D LiPD Library
 \description{
 Main LiPD loading function. Combines all processes into one.
 }
+\keyword{internal}
 

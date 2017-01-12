@@ -6,6 +6,7 @@
 
 #' Main LiPD loading function. Combines all processes into one.
 #' @export
+#' @keywords internal
 #' @return D LiPD Library
 loadLipds <- function(){
   # setModules()
@@ -40,6 +41,7 @@ loadLipds <- function(){
 
 #' Loop over multiple LiPD files. Load one at a time. 
 #' @export
+#' @keywords internal
 #' @return D LiPD Library
 multiLoad <- function(lpds_ext, working.dir, tmp){
   # library to store all lpd data, indexed by lpd dataset name (no extension)
@@ -60,6 +62,7 @@ multiLoad <- function(lpds_ext, working.dir, tmp){
 
 #' Load one LiPD file. All steps
 #' @export
+#' @keywords internal
 #' @return d LiPD File
 singleLoad <- function(lpd, working.dir, tmp){
   d <- list()

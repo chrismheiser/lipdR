@@ -15,4 +15,5 @@ x LiPD filename w/o extension
 \description{
 Remove the file extension from string name
 }
+\keyword{internal}
 

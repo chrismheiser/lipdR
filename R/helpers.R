@@ -108,6 +108,7 @@ createTmpDir <- function(){
 
 #' Return to preset "home" working directory
 #' @export
+#' @keywords internal
 #' @return none
 returnToRoot <- function(){
   if(!exists("working.dir",where = .GlobalEnv)){

@@ -15,5 +15,4 @@ d Modified LiPD file
 \description{
 Change index-by-number to index-by-variableName
 }
-\keyword{internal}
 
