@@ -7,6 +7,7 @@
 
 #' Change index-by-number to index-by-variableName
 #' @export
+#' @keywords internal
 #' @param d LiPD file
 #' @return d Modified LiPD file
 indexByName <- function(d){
