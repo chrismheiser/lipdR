@@ -80,10 +80,10 @@ singleLoad <- function(lpd, working.dir, tmp){
     d <- convertVersion(d)
 
     # Now you have all the data loaded in memory, place data from csv into columns
-    d <- addCsvToMetadata(d)
+    d <- addCsvToMetadataLoad(d)
 
     # Change columns and tables to index-by-name
-    d <- indexByName(d)
+    d <- indexByNameLoad(d)
 
     # We no longer need the csv and metadata separate parts. Link straight to the data.
     d <- removeLayers(d)

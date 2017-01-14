@@ -13,8 +13,8 @@
 indexByNameLoad <- function(d){
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chron <- c("chronData", "chronMeasurementTable", "chronModel")
-  d <- indexSection(d, paleo)
-  d <- indexSection(d, chron)
+  d <- indexSectionLoad(d, paleo)
+  d <- indexSectionLoad(d, chron)
   d <- indexGeo(d)
   return(d)
 }

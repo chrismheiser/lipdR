@@ -24,7 +24,7 @@ loadLipdFile <- function(lpd_noext, tmp){
     if (dir.exists("data")){ setwd("data") }
 
     # fake bagit. no data folder. all files in root dir.
-    d <- getData()
+    d <- getDataLoad()
     
     # Move back up to the tmp directory
     setwd(tmp)

@@ -34,7 +34,7 @@ saveLipdFile <- function(d, name){
     setwd(name)
 
     # reverse columns to index by number
-    d <- indexByNumber(d)
+    d <- indexByNumberSave(d)
     
     # collect all csv data into an organized list
     all.data <- collectCsvs(name, d)

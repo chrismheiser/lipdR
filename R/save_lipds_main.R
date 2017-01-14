@@ -13,9 +13,9 @@ saveLipds <- function(D){
 
   # Parse one or many records?
   if ("paleoData" %in% names(D)){
-      singleParse(D)
+      singleSave(D)
     } else {
-      multiParse(D)
+      multiSave(D)
     }
   # return back to the initial directory
   setwd(initial.dir)
@@ -27,7 +27,7 @@ saveLipds <- function(D){
 #' @param d LiPD data
 #' @param name Data set name
 #' @return none
-singleParseSave <- function(d, name=NA){
+singleSave <- function(d, name=NA){
   # save one lipd
   if (is.na(name)){
     name <- getDatasetName(d)
@@ -48,7 +48,7 @@ singleParseSave <- function(d, name=NA){
 #' @keywords internal
 #' @param D LiPD data
 #' @return none
-multiParseSave <- function(D){
+multiSave <- function(D){
   # loop by record names
   lpds <- names(D)
 
@@ -57,7 +57,7 @@ multiParseSave <- function(D){
         # reference to single lipd record
         d <- D[[lpds[[i]]]]
         print(sprintf("saving: %s", lpds[[i]]))
-        singleParse(d, lpds[[i]])
+        singleSave(d, lpds[[i]])
     }, error=function(cond){
       print(paste0("error saving: ", lpds[[i]], ": ", cond))
     })
@@ -79,7 +79,7 @@ getDatasetName <- function(d){
   })
   # No dataSetName entry in record. Have user enter a name
   if (is.na(name)){
-    name <- promptString("No data set name found. Enter the name: ")
+    name <- promptStringSave("No data set name found. Enter the name: ")
   }
   return(name)
 }

@@ -9,8 +9,8 @@ indexByNumberSave <- function(d){
   chrons <- c("chronData", "chronMeasurementTable", "chronModel")
 
   # convert single entries to lists. matching structure to 1.2
-  d <- indexSection(d, paleos)
-  d <- indexSection(d, chrons)
+  d <- indexSectionSave(d, paleos)
+  d <- indexSectionSave(d, chrons)
   d <- unindexGeo(d)
 
   return(d)
@@ -44,7 +44,7 @@ indexSectionSave <- function(d, keys){
             table <- d[[key1]][[i]][[key2]][[j]]
             
             if(!is.null(table)){
-              new <- moveColsDown(table)
+              new <- moveColsDownSave(table)
               d[[key1]][[i]][[key2]][[j]] <- new
             }
             
@@ -58,14 +58,14 @@ indexSectionSave <- function(d, keys){
             # d$paleoData[[i]]paleoModel[[j]]$summaryTable - should only be one
             table <- d[[key1]][[i]][[key3]][[j]][["summaryTable"]]
             if (!is.null(table)){
-              new <- moveColsDown(table)
+              new <- moveColsDownSave(table)
               d[[key1]][[i]][[key3]][[j]][["summaryTable"]] <- new
             }
             
             # d$paleoData[[i]]paleoModel[[j]]$ensembleTable - should only be one
             table <- d[[key1]][[i]][[key3]][[j]][["ensembleTable"]]
             if (!is.null(table)){
-              new <- moveColsDown(table)
+              new <- moveColsDownSave(table)
               d[[key1]][[i]][[key3]][[j]][["ensembleTable"]] <- new
             }
             # d$paleoData[[i]]paleoModel[[j]]$distributionTable - can be one or many
@@ -74,7 +74,7 @@ indexSectionSave <- function(d, keys){
               # d$paleoData[[i]]paleoModel[[j]]$distributionTable[[k]]
               table <- d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]]
               if (!is.null(table)){
-                new <- moveColsDown(table)
+                new <- moveColsDownSave(table)
                 # only add if the table exists
                 d[[key1]][[i]][[key3]][[j]][["distributionTable"]][[k]] <- new
               }
