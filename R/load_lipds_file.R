@@ -39,7 +39,7 @@ loadLipdFile <- function(lpd_noext, tmp){
 #' @export
 #' @keywords internal
 #' @return data.list List of data for one LiPD file
-getData <- function(){
+getDataLoad <- function(){
   data.list <- list()
   # list of csv files
   c <- listFiles("csv")

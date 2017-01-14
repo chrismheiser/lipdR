@@ -3,7 +3,7 @@
 #' @keywords internal
 #' @param d Metadata
 #' @return d Modified metadata
-indexByNumber <- function(d){
+indexByNumberSave <- function(d){
 
   paleos <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chrons <- c("chronData", "chronMeasurementTable", "chronModel")
@@ -22,7 +22,7 @@ indexByNumber <- function(d){
 #' @param d LiPD Metadata
 #' @param keys Section keys
 #' @return d Modified metadata
-indexSection <- function(d, keys){
+indexSectionSave <- function(d, keys){
   
   tryCatch({
     key1 <- keys[[1]]
@@ -103,7 +103,7 @@ indexSection <- function(d, keys){
 #' @keywords internal
 #' @param table Table data
 #' @return table Modified table data
-moveTableUp <- function(table, pc, tableType){
+moveTableUpSave <- function(table, pc, tableType){
   d = list()
   tryCatch({
     tableNameKey = paste0(pc, "Name")
@@ -130,7 +130,7 @@ moveTableUp <- function(table, pc, tableType){
 #' @keywords internal
 #' @param table Table data
 #' @return table Modified table data
-moveColsDown <- function(table){
+moveColsDownSave <- function(table){
 
   tmp <- list()
   new.cols <- list()

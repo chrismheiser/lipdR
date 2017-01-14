@@ -8,7 +8,7 @@
 #' @keywords internal
 #' @param d LiPD Metdata
 #' @return d Modfified LiPD Metadata
-addCsvToMetadata <- function(d){
+addCsvToMetadataLoad <- function(d){
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chron <- c("chronData", "chronMeasurementTable", "chronModel")
   d <- mergeDataLipd(d, paleo)
@@ -22,7 +22,7 @@ addCsvToMetadata <- function(d){
 #' @param d LiPD metadata
 #' @param keys Paleo or Chron keys
 #' @return d Modified LiPD metadata
-mergeDataLipd <- function(d, keys){
+mergeDataLoad <- function(d, keys){
 
     key1 <- keys[[1]]
     key2 <- keys[[2]]

@@ -27,7 +27,7 @@ saveLipds <- function(D){
 #' @param d LiPD data
 #' @param name Data set name
 #' @return none
-singleParse <- function(d, name=NA){
+singleParseSave <- function(d, name=NA){
   # save one lipd
   if (is.na(name)){
     name <- getDatasetName(d)
@@ -48,7 +48,7 @@ singleParse <- function(d, name=NA){
 #' @keywords internal
 #' @param D LiPD data
 #' @return none
-multiParse <- function(D){
+multiParseSave <- function(D){
   # loop by record names
   lpds <- names(D)
 
@@ -89,7 +89,7 @@ getDatasetName <- function(d){
 #' @keywords internal
 #' @param statement Statement that gets printed to the user
 #' @return ans User input entry
-promptString <- function(statement){
+promptStringSave <- function(statement){
   invalid = TRUE
   # Loop until valid input
   while (invalid){

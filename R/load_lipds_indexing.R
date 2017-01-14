@@ -10,7 +10,7 @@
 #' @keywords internal
 #' @param d LiPD file
 #' @return d Modified LiPD file
-indexByName <- function(d){
+indexByNameLoad <- function(d){
   paleo <- c("paleoData", "paleoMeasurementTable", "paleoModel")
   chron <- c("chronData", "chronMeasurementTable", "chronModel")
   d <- indexSection(d, paleo)
@@ -25,7 +25,7 @@ indexByName <- function(d){
 #' @param d LiPD metadata
 #' @param keys Section keys
 #' @return d Modified LiPD metadata
-indexSection <- function(d, keys){
+indexSectionLoad <- function(d, keys){
   key1 <- keys[[1]]
   key2 <- keys[[2]]
   key3 <- keys[[3]]
