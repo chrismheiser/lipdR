@@ -22,15 +22,16 @@ loadLipdFile <- function(lpd_noext, tmp){
 
     # real bagit. move into data folder
     if (dir.exists("data")){ setwd("data") }
-
+  },error=function(cond){
+    print(paste0("error: loadLipdFile: Couldn't find the unarchived LiPD data. Make sure your LiPD filename matches the data set name: ", lpd_noext))
+  })
+  
     # fake bagit. no data folder. all files in root dir.
     d <- getDataLoad()
     
     # Move back up to the tmp directory
     setwd(tmp)
-  },error=function(cond){
-    print(paste0("Couldn't find the unarchived LiPD data. Make sure your LiPD filename matches the data set name: ", lpd_noext))
-  })
+
 
   return(d)
 }
@@ -41,6 +42,8 @@ loadLipdFile <- function(lpd_noext, tmp){
 #' @return data.list List of data for one LiPD file
 getDataLoad <- function(){
   data.list <- list()
+  j.data <- list()
+  c.data <- list()
   # list of csv files
   c <- listFiles("csv")
   # csv data placeholder
@@ -62,7 +65,11 @@ getDataLoad <- function(){
     data.list[["metadata"]] <- list()
   } else {
     # use jsonlite to parse json from file
-    j.data <- jsonlite::fromJSON(j, simplifyDataFrame = FALSE)
+    tryCatch({
+      j.data <- jsonlite::fromJSON(j, simplifyDataFrame = FALSE)
+    }, error=function(cond){
+      print("error: getDataLoad: Unable to import JSONLD. Check that JSONLD is valid.")
+    })
     # remove empty items from the json
     j.data <- removeEmptyRec(j.data)
     # combine data for return.
