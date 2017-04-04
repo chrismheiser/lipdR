@@ -103,33 +103,30 @@ mergeDataLoad <- function(d, keys){
             }
 
             # distribution tables
-            dat <- hasData(pc[[i]][[key3]][[j]][["distributionTable"]], 1)
-            if (!is.null(dat)){
-              distributionTable <- vector(mode = "list",length = length(dat)[1])
-              if(length(distributionTable)>=1){
-
-                # d$chronData[[i]]$chronModel[[j]]$distributionTable
-                for (k in 1:length(pc[[i]][[key3]][[j]][["distributionTable"]][[1]])[1]){
-
-                  # d$chronData[[i]]$chronModel[[j]]$distributionTable[[k]]
-                  table <- pc[[i]][[key3]][[j]][["distributionTable"]][[k]]
-
-                  filename <- table[["filename"]]
-                  if (!is.null(filename)){
-                    csv.cols <- d[["csv"]][[filename]]
-                    meta.cols <- table[["columns"]]
-                    columns  <- mergeCsvLoad(csv.cols, meta.cols)
-                    toCopy <- which(names(table)!="columns")
-                    for(tt in toCopy){
-                      distributionTable[[k]][[names(table)[tt]]] <- table[[names(table)[tt]]]
+            # d$chronData[[i]]$chronModel[[j]]$distributionTable - possibly multiple per model
+              dat <- hasData(pc[[i]][[key3]][[j]], "distributionTable")
+              if (!is.null(dat)){
+                # data exists, create a new dist table of same length. 
+                distributionTable <- vector(mode = "list",length = length(pc[[i]][[key3]][[j]][["distributionTable"]]))
+                if(length(distributionTable)>=1){
+                  for (k in 1:length(pc[[i]][[key3]][[j]][["distributionTable"]])){
+                    table <- pc[[i]][[key3]][[j]][["distributionTable"]][[k]]
+                    filename <- table[["filename"]]
+                    # filename required. if no filename, we cannot get csv data.
+                    if (!is.null(filename)){
+                      csv.cols <- d[["csv"]][[filename]]
+                      meta.cols <- table[["columns"]]
+                      columns  <- mergeCsvLoad(csv.cols, meta.cols)
+                      toCopy <- which(names(table)!="columns")
+                      for(tt in toCopy){
+                        distributionTable[[k]][[names(table)[tt]]] <- table[[names(table)[tt]]]
+                      }
+                      distributionTable[[k]]$columns <- columns
                     }
-                    distributionTable[[k]]$columns <- columns
-
-                  }
-                } # end loop
-                chronModel[[j]]$distributionTable <- distributionTable
-              } # end length
-            } # end distribution
+                  } # end loop
+                  chronModel[[j]]$distributionTable <- distributionTable
+                } # end length
+              } # end distribution
 
             #add in anything that we didn't recreate
             icm <- names(pc[[i]][[key3]][[j]])
@@ -146,7 +143,6 @@ mergeDataLoad <- function(d, keys){
       }#end chronModel
 
     } ## end chrondata
-
   return(d)
 }
 

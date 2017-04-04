@@ -1,10 +1,10 @@
 ###############################################
-## Load Lipds - wrapper
+## Read Lipds - wrapper
 ## Combines all the file loading functions
 ## into one process
 ###############################################
 
-#' Main LiPD loading function. Combines all processes into one.
+#' Main LiPD reading function. Combines all processes into one.
 #' @export
 #' @keywords internal
 #' @return D LiPD Library
@@ -26,11 +26,11 @@ loadLipds <- function(){
 
   if (!is.null(path.and.file$file)){
     # load one file. loads data directly into variable
-    tryCatch({
+    # tryCatch({
       D <- singleLoad(lpds_ext[[1]], working.dir, tmp)
-    }, error=function(cond){
-      print(paste0("load_lipds_main: loadLipds: Failed to import with singleLoad(), ", cond))
-    })
+    # }, error=function(cond){
+    #   print(paste0("load_lipds_main: loadLipds: Failed to import with singleLoad(), ", cond))
+    # })
   } else {
     # load multiple files. loads files into a list by filename.
     D <- multiLoad(lpds_ext, working.dir, tmp)
