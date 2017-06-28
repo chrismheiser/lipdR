@@ -1,4 +1,7 @@
 # lipdR
+
+### This repository has been merged with the other [LiPD Utilities](https://github.com/nickmckay/LiPD-utilities/tree/master/R) . Code here is no longer maintained.
+
 LiPD Utilities for R
 
 [![DOI](https://zenodo.org/badge/23949/chrismheiser/lipdR.svg)](https://zenodo.org/badge/latestdoi/23949/chrismheiser/lipdR)
